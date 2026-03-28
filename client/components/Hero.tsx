@@ -35,8 +35,6 @@ const Hero = () => {
         </div>
 
         
-        {/* <div className="row-span-3"></div> */}
-
         <div className="col-span-2 row-span-2 flex items-center justify-center">
           <Scene />
         </div>
