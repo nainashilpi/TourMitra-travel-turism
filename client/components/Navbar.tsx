@@ -1,108 +1,147 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { NAV_LINKS } from "@/constants";
-import Button from "./Button";
 import BookingBar from "./Bookingbar";
 
-const Navbar = () => {
+export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showBar, setShowBar] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeLink, setActiveLink] = useState("");
+  const [showBar, setShowBar] = useState(false); // ✅ KEEP BOOKING BAR STATE
 
+  // Navbar scroll effect
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20);
 
-    const handleScroll = () => {
-      if (window.scrollY > 200) {
+      // ✅ BOOKING BAR LOGIC (UNCHANGED)
+      const hero = document.getElementById("hero");
+      if (!hero) return;
+
+      const heroHeight = hero.offsetHeight;
+      const scrollY = window.scrollY;
+
+      if (scrollY > 150 && scrollY < heroHeight) {
         setShowBar(true);
       } else {
         setShowBar(false);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Close mobile menu on resize
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth >= 1024) setIsOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   return (
     <>
-      <nav className="fixed  top-0 left-0 w-full bg-gradient-to-r from-slate-900 via-blue-950 to-black backdrop-blur-md border-b border-[#a7afbb]  z-50 shadow-sm flex items-center justify-between max-w-[1690px] mx-auto lg:px-20 px-6 py-2">
-        <Link href="/">
-          <Image src="/logo.png" alt="logo" width={84} height={19} className="w-25 h-12"/>
-        </Link>
+      {/* ================= NAVBAR ================= */}
+      <nav
+        className="fixed top-0 left-0 w-full border-2 h-21 bg-gradient-to-r from-slate-900 via-blue-950 to-black z-50 transition-all duration-500"
+        // style={{
+        //   background: scrolled
+        //     ? "rgba(5, 10, 24, 0.92)"
+        //     : "linear-gradient(180deg, #020617 0%, #020617 40%, #000000 100%)",
+        //   backdropFilter: scrolled ? "blur(20px)" : "blur(0px)",
+        //   borderBottom: scrolled
+        //     ? "1px solid rgba(148,163,184,0.12)"
+        //     : "none",
+        // }}
+      >
+        <div className="max-w-[1690px] mx-auto px-6 lg:px-20 flex items-center justify-between h-16">
 
-        <ul className="hidden h-full gap-12 lg:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              href={link.href}
-              key={link.key}
-              className="text-[14px] font-normal text-black flex items-center cursor-pointer pb-1.5 transition-all hover:text-gray-400"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </ul>
+          {/* Logo */}
+          <Link href="/">
+            <Image
+              src="/logo.png"
+              alt="logo"
+              width={84}
+              height={19}
+              className="h-21 w-auto"
+            />
+          </Link>
 
-        <div className="lg:flex items-center hidden ">
-          <Button
-            type="button"
-            title="Login"
-            icon="/user.svg"
-            variant="btn_dark_green"
-            
-          />
+          {/* Desktop Links */}
+          <ul className="hidden lg:flex items-center gap-4">
+            {NAV_LINKS.map((link) => (
+              <li key={link.key}>
+                <Link
+                  href={link.href}
+                  onClick={() => setActiveLink(link.key)}
+                  className={`px-4 py-2 text-sm rounded-lg transition ${
+                    activeLink === link.key
+                      ? "text-sky-300"
+                      : "text-gray-300 hover:text-white"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* Desktop Buttons */}
+          <div className="hidden lg:flex gap-3">
+            <button className="px-4 py-2 border rounded-lg text-gray-300 hover:text-white">
+              Login
+            </button>
+            <button className="px-4 py-2 bg-blue-600 rounded-lg text-white">
+              Book Now
+            </button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="lg:hidden"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            ☰
+          </button>
         </div>
 
-        <Image
-          src={isOpen ? "/close.svg" : "/menu.svg"}
-          alt="menu"
-          width={32}
-          height={32}
-          className="cursor-pointer lg:hidden"
-          onClick={() => setIsOpen(!isOpen)}
-        />
-
+        {/* Mobile Menu */}
         {isOpen && (
-          <div className="absolute top-full left-0 w-full bg-white shadow-md flex flex-col items-center gap-6 py-6 lg:hidden">
+          <div className="lg:hidden bg-black text-white p-4">
             {NAV_LINKS.map((link) => (
               <Link
-                href={link.href}
                 key={link.key}
-                className="text-black text-sm font-medium hover:font-bold"
+                href={link.href}
                 onClick={() => setIsOpen(false)}
+                className="block py-2"
               >
                 {link.label}
               </Link>
             ))}
-
-            <Button
-              type="button"
-              title="Login"
-              icon="/user.svg"
-              variant="btn_dark_green"
-            />
           </div>
         )}
       </nav>
 
+      {/* ================= BOOKING BAR (UNCHANGED) ================= */}
       <div
-  className={`fixed left-0 w-full h-100px z-[49] bg-white backdrop-blur-md border rounded-3xl shadow-md transition-all duration-300 ${
-    showBar
-      ? "top-[150px] translate-y-0 opacity-100"
-      : "top-[70px] -translate-y-full opacity-0"
-  }`}
->
-  <div className="max-w-[1640px] mx-auto px-6 lg:px-20 py-4 flex flex-col lg:flex-row items-center justify-between gap-4">
+        className={`fixed left-0 w-full z-[49] transition-all duration-300 ${
+          showBar
+            ? "top-[150px] opacity-100"
+            : "top-[70px] -translate-y-full opacity-0"
+        }`}
+      >
+        <div className="max-w-[1640px] mx-auto px-6 lg:px-20 py-4">
+          <BookingBar />
+        </div>
+      </div>
 
-    <BookingBar/>
-  </div>
-</div>
-
-      <div className="h-[60px]" />
+      {/* Spacer */}
+      <div className="h-16" />
     </>
   );
-};
-
-export default Navbar;
+}

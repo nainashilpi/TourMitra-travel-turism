@@ -5,7 +5,7 @@ const Hero = () => {
   return (
     <>
       
-      <div className="grid grid-cols-4 grid-rows-3 h-screen mt-5 
+      <div id="hero" className="grid grid-cols-4 grid-rows-3 h-screen mt-5 
                       bg-gradient-to-r from-slate-900 via-blue-950 to-black">
 
         
