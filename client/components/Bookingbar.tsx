@@ -69,7 +69,7 @@ const BookingBar = () => {
           <div className="w-full lg:w-48">
             <DatePicker
               selected={departure}
-              onChange={(date) => setDeparture(date)}
+              onChange={(date: Date | null) => setDeparture(date)}
               placeholderText="Departure"
               className="w-full px-6 py-3 rounded-lg text-lg bg-amber-500"
               minDate={new Date()}
