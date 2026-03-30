@@ -2,378 +2,163 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-interface ScrollState {
-  phase: "idle" | "fading" | "expanding" | "revealed";
-  progress: number; // 0 → 1
-}
-
-// ─── Component ────────────────────────────────────────────────────────────────
 export default function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [scroll, setScroll] = useState<ScrollState>({ phase: "idle", progress: 0 });
-  const [pinTop, setPinTop] = useState(0);
+  const [scroll, setScroll] = useState(0);
+  
+  // Interaction States
+  const [activeTab, setActiveTab] = useState<string | null>(null);
+  const [travellers, setTravellers] = useState(2);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    // Pin the section while we animate (the section is taller than viewport)
     const handleScroll = () => {
-      const rect = section.getBoundingClientRect();
-      const sectionTop = window.scrollY + rect.top - (rect.top - section.offsetTop);
-      const scrollY = window.scrollY;
-      const sectionStart = section.offsetTop;
-      const sectionHeight = section.offsetHeight;
-      const viewH = window.innerHeight;
-
-      // Pinnable scroll range
-      const scrollRange = sectionHeight - viewH;
-      const scrolled = scrollY - sectionStart;
-      const raw = Math.max(0, Math.min(1, scrolled / scrollRange));
-
-      let phase: ScrollState["phase"] = "idle";
-      if (raw > 0 && raw < 0.35) phase = "fading";
-      else if (raw >= 0.35 && raw < 0.7) phase = "expanding";
-      else if (raw >= 0.7) phase = "revealed";
-
-      setScroll({ phase, progress: raw });
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const scrollRange = sectionRef.current.offsetHeight - window.innerHeight;
+      const progress = Math.max(0, Math.min(1, -rect.top / scrollRange));
+      setScroll(progress);
     };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ── Derived values ──────────────────────────────────────────────────────────
-  const { phase, progress } = scroll;
-
-  // Fade out overlay items (0→0.35)
-  const fadeProgress = Math.min(1, progress / 0.35);
-  const overlayOpacity = 1 - fadeProgress;
-
-  // Mask expand (0.35→0.7)
-  const expandProgress = Math.max(0, Math.min(1, (progress - 0.35) / 0.35));
-  const maskSize = 10 + expandProgress * 390; // 10% → 400%
-  const planeScale = 1 + expandProgress * 0.35;
-
-  // Reveal caption (0.7→1)
-  const captionOpacity = Math.max(0, Math.min(1, (progress - 0.7) / 0.3));
-
   return (
-    <>
-      {/* Install note — remove in production */}
-      {/* npx gsap is NOT needed — pure CSS scroll */}
+    <div ref={sectionRef} style={{ height: "250vh", position: "relative", backgroundColor: "#020b18" }}>
+      <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
+        
+        {/* 1. Background Characters - Image Layer */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "url('/tourists.png')", 
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "brightness(0.8)",
+          transform: `scale(${1 + scroll * 0.1})`,
+          zIndex: 1
+        }} />
 
-      {/*
-        FILE LOCATION IN NEXT.JS:
-        src/app/components/HeroSection.tsx   (App Router)
-        — or —
-        src/components/HeroSection.tsx       (Pages Router)
+        {/* 2. Main Title - Background Layer (Overlapping effect) */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 2, // Characters ke upar but filter ke peeche
+          pointerEvents: "none",
+          marginTop: "100px", // Text ko thoda niche shift kiya overlap avoid karne ke liye
+          opacity: 1 - scroll * 1.5
+        }}>
+          <h1 style={{
+            fontSize: "clamp(5rem, 18vw, 13rem)",
+            color: "white",
+            fontWeight: "900",
+            margin: "0",
+            marginTop: "100px",
+            lineHeight: "0.8",
+            letterSpacing: "-5px",
+          }}><span className="text-white font-extrabold tracking-tight hidden sm:block">
+            Tour<span className="text-[#e7d393]">Mitra</span>
+          </span></h1>
+          
+          <p style={{ color: "#e7d393", fontSize: "2.5rem", fontWeight: "300", marginTop: "10px" }}>Explore the Unseen</p>
+          <div style={{ width: "100px", height: "2px", background: "#e7d393", margin: "20px auto" }} />
+          <p style={{ color: "white", letterSpacing: "0.6em", fontSize: "0.7rem", opacity: 0.8 }}>EXPLORE THE UNSEEN</p>
+        </div>
 
-        Then import it in src/app/page.tsx (App Router) or pages/index.tsx
-      */}
-
-      {/* Outer scroll container — tall enough to create scroll room */}
-      <div
-        ref={sectionRef}
-        id="hero"
-        style={{ height: "400vh", position: "relative" }}
-      >
-        {/* Sticky wrapper that stays pinned to the viewport */}
-        <div
-          style={{
-            position: "sticky",
-            top: 0,
-            height: "100vh",
-            overflow: "hidden",
-            background: "#020b18",
+        {/* 3. TRAVEL FILTER - Top Layer */}
+        <div style={{
+          position: "relative",
+          zIndex: 10, // Sabse upar
+          paddingTop: "150px", // Filter ko upar rakha
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "8px"
+        }}>
+          <p style={{ color: "white", width: "800px", textAlign: "left", fontSize: "1.1rem", fontWeight: "500" }}>Travel Filter</p>
+          
+          <div style={{
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {/* ── Noise overlay ───────────────────────────────────────────────── */}
-          <div className="noisy" style={{ opacity: 0.04 }} />
-
-          {/* ── Background image of 3 tourists ─────────────────────────────── */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage:"url(tourists.png)",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              filter: "brightness(0.55) saturate(1.2)",
-            }}
-          />
-
-          {/* ── Radial gradient depth ───────────────────────────────────────── */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "radial-gradient(ellipse at center, transparent 30%, #020b18 100%)",
-            }}
-          />
-
-          {/* ── TOP CONTENT (fades out on scroll) ──────────────────────────── */}
-          <div
-            className="will-fade"
-            style={{
-              position: "absolute",
-              top: "6vh",
-              left: "50%",
-              transform: "translateX(-50%)",
-              textAlign: "center",
-              opacity: overlayOpacity,
-              transition: "opacity 0.1s linear",
-              zIndex: 10,
-              width: "100%",
-              pointerEvents: overlayOpacity < 0.05 ? "none" : "auto",
-            }}
-          >
-            <p
-              style={{
-                fontFamily: "'Modern Negra', sans-serif",
-                fontSize: "clamp(3rem, 14vw, 11rem)",
-                lineHeight: 1,
-                letterSpacing: "-0.02em",
-                color: "white",
-                margin: 0,
-              }}
+            background: "rgba(255, 255, 255, 0.1)",
+            backdropFilter: "blur(20px)",
+            border: "1.5px solid rgba(231, 211, 147, 0.5)",
+            borderRadius: "15px",
+            width: "850px",
+            padding: "15px",
+            boxShadow: "0 15px 35px rgba(0,0,0,0.4)"
+          }}>
+            
+            {/* Where to? Section */}
+            <div 
+              style={{ flex: 1, padding: "0 20px", borderRight: "1px solid rgba(255,255,255,0.2)", cursor: "pointer", position: 'relative' }}
+              onClick={() => setActiveTab(activeTab === 'place' ? null : 'place')}
             >
-              TourMitra
-            </p>
-            <p
-              style={{
-                fontSize: "clamp(0.85rem, 1.5vw, 1.1rem)",
-                color: "#aaa",
-                marginTop: "0.5rem",
-                letterSpacing: "0.25em",
-                textTransform: "uppercase",
-              }}
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <span style={{ fontSize: '20px' }}>📍</span>
+                <div>
+                  <p style={{ color: "white", fontWeight: "bold", margin: 0 }}>Where to?</p>
+                  <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.8rem", margin: 0 }}>(Destination)</p>
+                </div>
+              </div>
+              {/* Dropdown UI like image */}
+              {activeTab === 'place' && (
+                <div style={{ position: 'absolute', top: '70px', left: 0, background: 'white', borderRadius: '8px', width: '200px', color: '#333', overflow: 'hidden', zIndex: 100 }}>
+                  {["Delhi, India", "Kyoto, Japan", "Paris, France"].map(city => (
+                    <div key={city} style={{ padding: '12px', borderBottom: '1px solid #eee', fontSize: '14px' }}>{city}</div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* When? Section */}
+            <div 
+              style={{ flex: 1, padding: "0 20px", borderRight: "1px solid rgba(255,255,255,0.2)", cursor: "pointer", position: 'relative' }}
+              onClick={() => setActiveTab(activeTab === 'date' ? null : 'date')}
             >
-              Your world. Your journey. Your sky.
-            </p>
-          </div>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <span style={{ fontSize: '20px' }}>📅</span>
+                <div>
+                  <p style={{ color: "white", fontWeight: "bold", margin: 0 }}>When?</p>
+                  <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.8rem", margin: 0 }}>(Date Range)</p>
+                </div>
+              </div>
+              {/* Calendar UI like image */}
+              {activeTab === 'date' && (
+                <div style={{ position: 'absolute', top: '70px', left: '0', background: 'white', borderRadius: '12px', padding: '15px', color: '#333', zIndex: 100, boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}>
+                  <p style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '14px', marginBottom: '10px' }}>May 2023</p>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '5px', fontSize: '11px' }}>
+                    {Array.from({length: 31}).map((_, i) => (
+                      <div key={i} style={{ padding: '5px', background: i === 15 ? '#007bff' : 'transparent', color: i === 15 ? 'white' : '#333', borderRadius: '4px', textAlign: 'center' }}>{i+1}</div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
 
-          {/* ── LEFT & RIGHT side lists (fade out) ─────────────────────────── */}
-          <ul
-            className="will-fade"
-            style={{
-              position: "absolute",
-              left: "4vw",
-              top: "50%",
-              transform: "translateY(-50%)",
-              listStyle: "none",
-              margin: 0,
-              padding: 0,
-              opacity: overlayOpacity,
-              transition: "opacity 0.1s linear",
-              zIndex: 10,
-            }}
-          >
-            {["Best Fares Daily", "Zero Hidden Fees", "24/7 Support"].map((t) => (
-              <li
-                key={t}
-                style={{
-                  color: "#e7d393",
-                  fontFamily: "'DM Serif Text', serif",
-                  fontSize: "clamp(0.9rem, 1.4vw, 1.25rem)",
-                  marginBottom: "1.2rem",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                }}
-              >
-                <span style={{ color: "#e7d393", fontSize: "0.7rem" }}>✦</span>
-                {t}
-              </li>
-            ))}
-          </ul>
+            {/* Travellers Section */}
+            <div style={{ flex: 1, padding: "0 20px", display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <span style={{ fontSize: '20px' }}>👥</span>
+                <div>
+                  <p style={{ color: "white", fontWeight: "bold", margin: 0 }}>Travellers</p>
+                  <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.8rem", margin: 0 }}>{travellers} Adults</p>
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: '10px', background: 'rgba(255,255,255,0.2)', padding: '5px 10px', borderRadius: '20px' }}>
+                <button onClick={() => setTravellers(Math.max(1, travellers-1))} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>-</button>
+                <button onClick={() => setTravellers(travellers+1)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>+</button>
+              </div>
+            </div>
 
-          <ul
-            className="will-fade"
-            style={{
-              position: "absolute",
-              right: "4vw",
-              top: "50%",
-              transform: "translateY(-50%)",
-              listStyle: "none",
-              margin: 0,
-              padding: 0,
-              opacity: overlayOpacity,
-              transition: "opacity 0.1s linear",
-              zIndex: 10,
-              textAlign: "right",
-            }}
-          >
-            {["200+ Destinations", "Smart Alerts", "Group Deals"].map((t) => (
-              <li
-                key={t}
-                style={{
-                  color: "#e7d393",
-                  fontFamily: "'DM Serif Text', serif",
-                  fontSize: "clamp(0.9rem, 1.4vw, 1.25rem)",
-                  marginBottom: "1.2rem",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "flex-end",
-                  gap: "0.5rem",
-                }}
-              >
-                {t}
-                <span style={{ color: "#e7d393", fontSize: "0.7rem" }}>✦</span>
-              </li>
-            ))}
-          </ul>
-
-          {/* ── AIRPLANE — masked overlay image ────────────────────────────── */}
-          {/* <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              zIndex: 20,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              // The mask punches a growing circle revealing the tourists beneath
-              maskImage: "radial-gradient(circle at center, black 55%, transparent 56%)",
-              WebkitMaskImage:
-                "radial-gradient(circle at center, black 55%, transparent 56%)",
-              maskSize: `${maskSize}%`,
-              WebkitMaskSize: `${maskSize}%`,
-              maskPosition: "center",
-              WebkitMaskPosition: "center",
-              maskRepeat: "no-repeat",
-              WebkitMaskRepeat: "no-repeat",
-            }}
-          >
-            {/* Dark tinted background inside the mask (pre-reveal) */}
-            {/* <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "#020b18",
-                opacity: 1 - expandProgress * 0.8,
-              }}
-            />
-
-            {/* Airplane PNG */}
-            {/* <img
-              src="/airplane_nobg.png"
-              alt="airplane"
-              style={{
-                position: "relative",
-                zIndex: 2,
-                width: "clamp(280px, 55vw, 780px)",
-                objectFit: "contain",
-                transform: `scale(${planeScale}) translateY(${expandProgress * -6}%)`,
-                transition: "transform 0.05s linear",
-                filter: "drop-shadow(0 30px 60px rgba(0,120,255,0.35))",
-                opacity: Math.max(0, 1 - expandProgress * 1.6),
-              }}
-            />
-          </div> */} 
-
-          {/* ── CAPTION (fades in after reveal) ─────────────────────────────── */}
-          <div
-            id="masked-content"
-            style={{
-              position: "absolute",
-              bottom: "8vh",
-              left: "50%",
-              transform: "translateX(-50%)",
-              textAlign: "center",
-              opacity: captionOpacity,
-              transition: "opacity 0.1s linear",
-              zIndex: 30,
-              width: "min(700px, 90vw)",
-              pointerEvents: captionOpacity < 0.05 ? "none" : "auto",
-            }}
-          >
-            <h3
-              style={{
-                fontFamily: "'DM Serif Text', serif",
-                fontSize: "clamp(1.6rem, 4vw, 3.2rem)",
-                color: "white",
-                margin: "0 0 0.75rem",
-                lineHeight: 1.2,
-              }}
-            >
-              Adventure Starts When You Say Yes
-            </h3>
-            <p
-              style={{
-                color: "#9ca3af",
-                fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)",
-                margin: "0 0 2rem",
-                lineHeight: 1.7,
-              }}
-            >
-              Book smarter, travel further. SkyRoam connects you to hundreds of
-              destinations with the best fares, curated just for you.
-            </p>
-            <a
-              href="#book"
-              style={{
-                display: "inline-block",
-                padding: "0.8rem 2.4rem",
-                background: "#e7d393",
-                color: "#000",
-                fontWeight: 700,
-                borderRadius: "999px",
-                fontSize: "clamp(0.85rem, 1.2vw, 1rem)",
-                letterSpacing: "0.05em",
-                textDecoration: "none",
-                transition: "background 0.2s",
-              }}
-              onMouseEnter={(e) =>
-                ((e.target as HTMLAnchorElement).style.background = "#f5e9a8")
-              }
-              onMouseLeave={(e) =>
-                ((e.target as HTMLAnchorElement).style.background = "#e7d393")
-              }
-            >
-              Explore Flights →
-            </a>
-          </div>
-
-          {/* ── Scroll hint (visible at start) ─────────────────────────────── */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: "4vh",
-              left: "50%",
-              transform: "translateX(-50%)",
-              opacity: overlayOpacity * 0.7,
-              transition: "opacity 0.1s linear",
-              zIndex: 10,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "0.4rem",
-              color: "#666",
-              fontSize: "0.75rem",
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
-            }}
-          >
-            Scroll
-            <span style={{ animation: "bounce 1.4s ease-in-out infinite" }}>↓</span>
           </div>
         </div>
-      </div>
 
-      {/* ── Bounce keyframe ─────────────────────────────────────────────────── */}
-      <style>{`
-        @keyframes bounce {
-          0%, 100% { transform: translateY(0); }
-          50%       { transform: translateY(6px); }
-        }
-      `}</style>
-    </>
+        {/* Bottom Accessories */}
+        <div style={{ position: 'absolute', bottom: '40px', right: '60px', fontSize: '3rem', color: 'white', zIndex: 5 }}>✦</div>
+      </div>
+    </div>
   );
 }
