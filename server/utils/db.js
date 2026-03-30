@@ -1,11 +1,13 @@
 const mongoose = require("mongoose");
-require("dotenv").config(); // 🔥 VERY IMPORTANT
 
-const URI = process.env.MONGODB_URI; // 
+require("dotenv").config(); 
+
+const URI = process.env.MONGODB_URI; 
 
 console.log("Mongo URI:", URI);
 
 const connectDb = async () => {
+
     try {
         await mongoose.connect(URI);
         console.log("connection is successful to DB");

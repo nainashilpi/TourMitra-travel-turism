@@ -46,22 +46,18 @@ const Footer = () => {
           {/* Links Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-12 lg:gap-24">
             
-            <div className="flex flex-col gap-5">
-              <h4 className="text-sm font-black uppercase tracking-widest text-[#e7d393]">Company</h4>
-              <nav className="flex flex-col gap-3 text-sm">
-                <Link href="/about" className="hover:text-white transition-colors">About Us</Link>
-                <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>
-                <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
-              </nav>
+            <div className="flex flex-col gap-3">
+              <h4 className="font-semibold text-gray-900">Company</h4>
+              <Link href="/" className="text-gray-300 hover:text-sky-400 transition">About Us</Link>
+              <Link href="/" className="text-gray-300 hover:text-sky-400 transition">Careers</Link>
+              <Link href="/" className="text-gray-300 hover:text-sky-400 transition">Contact</Link>
             </div>
 
-            <div className="flex flex-col gap-5">
-              <h4 className="text-sm font-black uppercase tracking-widest text-[#e7d393]">Support</h4>
-              <nav className="flex flex-col gap-3 text-sm">
-                <Link href="/faq" className="hover:text-white transition-colors">FAQ</Link>
-                <Link href="/help" className="hover:text-white transition-colors">Help Center</Link>
-                <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-              </nav>
+            <div className="flex flex-col gap-3">
+              <h4 className="font-semibold text-gray-900">Support</h4>
+              <Link href="/" className="text-gray-300 hover:text-sky-400 transition">FAQ</Link>
+              <Link href="/" className="text-gray-300 hover:text-sky-400 transition">Help Center</Link>
+              <Link href="/" className="text-gray-300 hover:text-sky-400 transition">Terms & Conditions</Link>
             </div>
 
             <div className="flex flex-col gap-5 col-span-2 md:col-span-1">
@@ -81,12 +77,14 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[11px] font-medium tracking-wide text-white/30 uppercase">
-          <p>© {new Date().getFullYear()} TourMitra India. All rights reserved.</p>
-          <div className="flex gap-8">
-            <Link href="/privacy" className="hover:text-[#e7d393] transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-[#e7d393] transition-colors">Cookie Policy</Link>
+        <div className="border-t border-gray-300 my-10"></div>
+
+        <div className="flex flex-col md:flex-row justify-between items-center text-gray-300 text-sm">
+          <p>© {new Date().getFullYear()} Trovia. All rights reserved.</p>
+
+          <div className="flex gap-6 mt-3 md:mt-0">
+            <Link href="/" className="text-gray-300 hover:text-sky-600 transition">Privacy Policy</Link>
+            <Link href="/" className="text-gray-300 hover:text-sky-600 transition">Terms of Service</Link>
           </div>
         </div>
       </div>
