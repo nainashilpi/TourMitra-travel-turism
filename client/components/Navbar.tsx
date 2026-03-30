@@ -3,148 +3,106 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { NAV_LINKS } from "@/constants";
-import BookingBar from "./Bookingbar";
+
+const NAV_LINKS = [
+  { href: "/", key: "home", label: "Home" },
+  { href: "/", key: "how_it_works", label: "How Travio Work?" },
+  { href: "/", key: "services", label: "Services" },
+  { href: "/price", key: "pricing", label: "Pricing" },
+  { href: "/", key: "contact_us", label: "Contact Us" },
+];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeLink, setActiveLink] = useState("");
-  const [showBar, setShowBar] = useState(false); // ✅ KEEP BOOKING BAR STATE
+  const [activeLink, setActiveLink] = useState("home");
 
-  // Navbar scroll effect
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 20);
-
-      // ✅ BOOKING BAR LOGIC (UNCHANGED)
-      const hero = document.getElementById("hero");
-      if (!hero) return;
-
-      const heroHeight = hero.offsetHeight;
-      const scrollY = window.scrollY;
-
-      if (scrollY > 150 && scrollY < heroHeight) {
-        setShowBar(true);
-      } else {
-        setShowBar(false);
-      }
     };
-
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on resize
-  useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth >= 1024) setIsOpen(false);
-    };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
   return (
-    <>
-      {/* ================= NAVBAR ================= */}
-      <nav
-        className="fixed top-0 left-0 w-full border-2 h-21 bg-gradient-to-r from-slate-900 via-blue-950 to-black z-50 transition-all duration-500"
-        // style={{
-        //   background: scrolled
-        //     ? "rgba(5, 10, 24, 0.92)"
-        //     : "linear-gradient(180deg, #020617 0%, #020617 40%, #000000 100%)",
-        //   backdropFilter: scrolled ? "blur(20px)" : "blur(0px)",
-        //   borderBottom: scrolled
-        //     ? "1px solid rgba(148,163,184,0.12)"
-        //     : "none",
-        // }}
-      >
-        <div className="max-w-[1690px] mx-auto px-6 lg:px-20 flex items-center justify-between h-16">
-
-          {/* Logo */}
-          <Link href="/">
+    <nav
+      className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${
+        scrolled 
+          ? "bg-[#020b18]/90 backdrop-blur-lg py-3 border-b border-white/10 shadow-2xl" 
+          /* 🌟 FIX: Jab scroll NA HO, tab niche wala gradient background image se contrast banayega */
+          : "bg-gradient-to-b from-black/80 via-black/40 to-transparent py-5"
+      }`}
+    >
+      <div className="max-w-[1500px] mx-auto px-8 lg:px-16 flex items-center justify-between">
+        
+        {/* --- LOGO --- */}
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative h-11 w-11 transition-transform group-hover:rotate-12">
             <Image
               src="/logo.png"
               alt="logo"
-              width={84}
-              height={19}
-              className="h-21 w-auto"
+              fill
+              className="object-contain"
             />
-          </Link>
-
-          {/* Desktop Links */}
-          <ul className="hidden lg:flex items-center gap-4">
-            {NAV_LINKS.map((link) => (
-              <li key={link.key}>
-                <Link
-                  href={link.href}
-                  onClick={() => setActiveLink(link.key)}
-                  className={`px-4 py-2 text-sm rounded-lg transition ${
-                    activeLink === link.key
-                      ? "text-sky-300"
-                      : "text-gray-300 hover:text-white"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          {/* Desktop Buttons */}
-          <div className="hidden lg:flex gap-3">
-            <Link href="/login">
-            <button className="px-4 py-2 border rounded-lg text-gray-300 hover:text-white">
-              Login
-            </button>
-            </Link>
-            <Link href="/registration">
-            <button className="px-4 py-2 bg-blue-600 rounded-lg text-white">
-              Sign Up
-            </button></Link>
           </div>
+          <span className="text-white font-extrabold text-2xl tracking-tight hidden sm:block">
+            Tour<span className="text-[#e7d393]">Mitra</span>
+          </span>
+        </Link>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            ☰
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {isOpen && (
-          <div className="lg:hidden bg-black text-white p-4">
-            {NAV_LINKS.map((link) => (
+        {/* --- LINKS (Higher Contrast) --- */}
+        <ul className="hidden lg:flex items-center gap-10">
+          {NAV_LINKS.map((link) => (
+            <li key={link.key}>
               <Link
-                key={link.key}
                 href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="block py-2"
+                onClick={() => setActiveLink(link.key)}
+                className={`relative text-[15px] font-semibold transition-all duration-300 ${
+                  activeLink === link.key 
+                    ? "text-[#e7d393]" // Active link chamkega
+                    : "text-gray-100 hover:text-white" // Normal links pure white-ish honge
+                }`}
               >
                 {link.label}
+                {/* Image jaisa Dot ya Underline */}
+                {activeLink === link.key && (
+                  <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#e7d393] rounded-full shadow-[0_0_10px_#e7d393]" />
+                )}
               </Link>
-            ))}
-          </div>
-        )}
-      </nav>
+            </li>
+          ))}
+        </ul>
 
-      {/* ================= BOOKING BAR (UNCHANGED) ================= */}
-      <div
-        className={`fixed left-0 w-full z-[49] transition-all duration-300 ${
-          showBar
-            ? "top-[90px] opacity-100"
-            : "top-[70px] -translate-y-full opacity-0"
-        }`}
-      >
-        <div className="max-w-[1640px] mx-auto px-6 lg:px-20 py-4">
-          <BookingBar />
+        {/* --- BUTTONS --- */}
+        <div className="hidden lg:flex items-center gap-5">
+          <Link href="/login">
+            <button className="px-5 py-2.5 text-sm font-bold text-white border-2 border-white/20 rounded-xl hover:bg-white/10 hover:border-white/40 transition-all">
+              Login
+            </button>
+          </Link>
+          <Link href="/registration">
+            <button className="px-6 py-2.5 text-sm font-bold text-white bg-blue-600 rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:bg-blue-500 hover:-translate-y-0.5 transition-all">
+              Sign Up
+            </button>
+          </Link>
         </div>
+
+        {/* --- MOBILE TOGGLE --- */}
+        <button className="lg:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
+          <span className="text-3xl">{isOpen ? "✕" : "☰"}</span>
+        </button>
       </div>
 
-      {/* Spacer */}
-      <div className="h-16" />
-    </>
+      {/* --- MOBILE MENU --- */}
+      {isOpen && (
+        <div className="absolute top-0 left-0 w-full h-screen bg-[#020b18] flex flex-col items-center justify-center gap-8 z-[200]">
+           <button className="absolute top-8 right-8 text-white text-4xl" onClick={() => setIsOpen(false)}>✕</button>
+           {NAV_LINKS.map((link) => (
+             <Link key={link.key} href={link.href} className="text-2xl text-white font-bold" onClick={() => setIsOpen(false)}>{link.label}</Link>
+           ))}
+        </div>
+      )}
+    </nav>
   );
 }
