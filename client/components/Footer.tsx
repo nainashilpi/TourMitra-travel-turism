@@ -33,16 +33,16 @@ const Footer = () => {
             
             <div className="flex flex-col gap-3">
               <h4 className="font-semibold text-gray-900">Company</h4>
-              <Link href="/about" className="text-gray-300 hover:text-sky-400 transition">About Us</Link>
-              <Link href="/careers" className="text-gray-300 hover:text-sky-400 transition">Careers</Link>
-              <Link href="/contact" className="text-gray-300 hover:text-sky-400 transition">Contact</Link>
+              <Link href="/" className="text-gray-300 hover:text-sky-400 transition">About Us</Link>
+              <Link href="/" className="text-gray-300 hover:text-sky-400 transition">Careers</Link>
+              <Link href="/" className="text-gray-300 hover:text-sky-400 transition">Contact</Link>
             </div>
 
             <div className="flex flex-col gap-3">
               <h4 className="font-semibold text-gray-900">Support</h4>
-              <Link href="/faq" className="text-gray-300 hover:text-sky-400 transition">FAQ</Link>
-              <Link href="/help" className="text-gray-300 hover:text-sky-400 transition">Help Center</Link>
-              <Link href="/terms" className="text-gray-300 hover:text-sky-400 transition">Terms & Conditions</Link>
+              <Link href="/" className="text-gray-300 hover:text-sky-400 transition">FAQ</Link>
+              <Link href="/" className="text-gray-300 hover:text-sky-400 transition">Help Center</Link>
+              <Link href="/" className="text-gray-300 hover:text-sky-400 transition">Terms & Conditions</Link>
             </div>
 
             <div className="flex flex-col gap-3">
@@ -79,8 +79,8 @@ const Footer = () => {
           <p>© {new Date().getFullYear()} Trovia. All rights reserved.</p>
 
           <div className="flex gap-6 mt-3 md:mt-0">
-            <Link href="/privacy" className="text-gray-300 hover:text-sky-600 transition">Privacy Policy</Link>
-            <Link href="/terms" className="text-gray-300 hover:text-sky-600 transition">Terms of Service</Link>
+            <Link href="/" className="text-gray-300 hover:text-sky-600 transition">Privacy Policy</Link>
+            <Link href="/" className="text-gray-300 hover:text-sky-600 transition">Terms of Service</Link>
           </div>
         </div>
 
