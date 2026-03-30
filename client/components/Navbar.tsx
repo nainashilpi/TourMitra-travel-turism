@@ -93,12 +93,15 @@ export default function Navbar() {
 
           {/* Desktop Buttons */}
           <div className="hidden lg:flex gap-3">
+            <Link href="/login">
             <button className="px-4 py-2 border rounded-lg text-gray-300 hover:text-white">
               Login
             </button>
+            </Link>
+            <Link href="/registration">
             <button className="px-4 py-2 bg-blue-600 rounded-lg text-white">
-              Book Now
-            </button>
+              Sign Up
+            </button></Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -131,7 +134,7 @@ export default function Navbar() {
       <div
         className={`fixed left-0 w-full z-[49] transition-all duration-300 ${
           showBar
-            ? "top-[150px] opacity-100"
+            ? "top-[90px] opacity-100"
             : "top-[70px] -translate-y-full opacity-0"
         }`}
       >
