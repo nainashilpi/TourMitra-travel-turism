@@ -6,10 +6,11 @@ import Image from "next/image";
 
 const NAV_LINKS = [
   { href: "/", key: "home", label: "Home" },
-  { href: "/", key: "how_it_works", label: "How Travio Work?" },
-  { href: "/", key: "services", label: "Services" },
+  { href: "/service", key: "services", label: "Services" },
   { href: "/price", key: "pricing", label: "Pricing" },
-  { href: "/", key: "contact_us", label: "Contact Us" },
+  { href: "/contact", key: "contact_us", label: "Contact Us" },
+  { href: '/about', key: 'about', label: 'about' },
+
 ];
 
 export default function Navbar() {
@@ -82,7 +83,7 @@ export default function Navbar() {
             </button>
           </Link>
           <Link href="/registration">
-            <button className="px-6 py-2.5 text-sm font-bold text-white bg-blue-600 rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:bg-blue-500 hover:-translate-y-0.5 transition-all">
+            <button className="px-6 py-2.5 text-sm font-bold text-white bg-[#ac9c68] rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:bg-blue-500 hover:-translate-y-0.5 transition-all">
               Sign Up
             </button>
           </Link>
