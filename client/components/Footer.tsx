@@ -34,9 +34,9 @@ const Footer = () => {
                 <Link key={social.name} href={`https://${social.name}.com`} target="_blank">
                   <motion.div 
                     whileHover={{ y: -5, backgroundColor: "rgba(231, 211, 147, 0.2)" }}
-                    className="p-3 rounded-xl bg-white/10 border border-white/20 backdrop-blur-md transition-all shadow-lg"
+                    className="p-3 rounded-xl backdrop-blur-md transition-all shadow-lg"
                   >
-                    <Image src={social.icon} alt={social.name} width={20} height={20} className="brightness-200" />
+                    <Image src={social.icon} alt={social.name} width={20} height={20} className="brightness-200 bg-amber-50 rounded-2xl" />
                   </motion.div>
                 </Link>
               ))}
@@ -47,14 +47,14 @@ const Footer = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-12 lg:gap-24">
             
             <div className="flex flex-col gap-3">
-              <h4 className="font-semibold text-gray-900">Company</h4>
+              <h4 className="font-semibold text-gray-500">Company</h4>
               <Link href="/" className="text-gray-300 hover:text-sky-400 transition">About Us</Link>
               <Link href="/" className="text-gray-300 hover:text-sky-400 transition">Careers</Link>
               <Link href="/" className="text-gray-300 hover:text-sky-400 transition">Contact</Link>
             </div>
 
             <div className="flex flex-col gap-3">
-              <h4 className="font-semibold text-gray-900">Support</h4>
+              <h4 className="font-semibold text-gray-500">Support</h4>
               <Link href="/" className="text-gray-300 hover:text-sky-400 transition">FAQ</Link>
               <Link href="/" className="text-gray-300 hover:text-sky-400 transition">Help Center</Link>
               <Link href="/" className="text-gray-300 hover:text-sky-400 transition">Terms & Conditions</Link>

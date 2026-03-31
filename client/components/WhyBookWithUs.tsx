@@ -97,7 +97,7 @@ function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
       ref={ref}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative bg-gray-50 rounded-2xl p-6 cursor-pointer overflow-hidden transition-all duration-500"
+      className="relative rounded-2xl p-6 cursor-pointer overflow-hidden transition-all duration-500 bg-gradient-to-r from-slate-900 via-blue-950 to-black"
       style={{
         opacity: inView ? 1 : 0,
         transform: inView ? "translateY(0)" : "translateY(32px)",
@@ -108,7 +108,7 @@ function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
     >
       {/* Animated BG blob on hover */}
       <div
-        className="absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl transition-opacity duration-500 pointer-events-none"
+        className="absolute -top-8 -right-8 w-24 h-24 rounded-full  blur-2xl transition-opacity duration-500 pointer-events-none "
         style={{ background: feature.accent, opacity: hovered ? 0.12 : 0 }}
       />
 
@@ -118,8 +118,8 @@ function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
       >
         {feature.icon}
       </div>
-      <h3 className="font-bold text-gray-900 text-base leading-snug mb-2">{feature.title}</h3>
-      <p className="text-gray-500 text-sm">{feature.description}</p>
+      <h3 className="font-bold text-white text-base leading-snug mb-2">{feature.title}</h3>
+      <p className="text-gray-300 text-sm">{feature.description}</p>
 
       {/* Bottom accent bar */}
       <div
@@ -142,20 +142,20 @@ function OfferCard({ offer, index }: { offer: Offer; index: number }) {
       ref={ref}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative rounded-2xl border border-gray-200 p-6 overflow-hidden flex items-center justify-between gap-4 cursor-pointer transition-all duration-500"
+      className="relative rounded-2xl border bg-gradient-to-r from-slate-900 via-blue-950 to-black  border-gray-200 p-6  overflow-hidden flex items-center justify-between gap-4 cursor-pointer transition-all duration-500 "
       style={{
         opacity: inView ? 1 : 0,
         transform: inView ? "translateY(0)" : "translateY(24px)",
         transitionDelay: `${index * 150}ms`,
         boxShadow: hovered ? "0 16px 48px -12px rgba(59,130,246,0.2)" : "none",
-        background: offer.bg,
+      
       }}
     >
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 ">
         <p className="text-xs text-gray-400 font-medium mb-1">{offer.tag}</p>
-        <h3 className="text-xl font-extrabold text-gray-900 mb-2">{offer.title}</h3>
+        <h3 className="text-xl font-extrabold text-gray-300 mb-2">{offer.title}</h3>
         <p className="text-sm text-gray-500 mb-4 leading-relaxed">{offer.description}</p>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-all duration-200 active:scale-95">
+        <button className="bg-[#ac9c68] hover:bg-blue-700 text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-all duration-200 active:scale-95">
           {offer.cta}
         </button>
       </div>

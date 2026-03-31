@@ -314,7 +314,7 @@ export default function ServicesPage() {
 
       {/* ── Page Title ── */}
       <div style={{ padding: "32px 28px 20px", background: "linear-gradient(135deg,#020b18 0%,#0f2137 100%)" }}>
-        <p style={{ color: "#e7d393", fontSize: "12px", fontWeight: "700", letterSpacing: "0.15em", textTransform: "uppercase", margin: "0 0 8px" }}>
+        <p style={{ color: "#e7d393", fontSize: "12px", fontWeight: "700", letterSpacing: "0.15em", textTransform: "uppercase", margin: "50px 0 8px" }}>
           ✈ Explore Packages
         </p>
         <h1 style={{ color: "white", fontSize: "clamp(1.6rem, 4vw, 2.6rem)", fontWeight: "900", margin: "0 0 6px", letterSpacing: "-0.5px" }}>

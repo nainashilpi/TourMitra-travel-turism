@@ -57,7 +57,7 @@ const destinations: Destination[] = [
     city: "Jaipur",
     country: "India",
     flag: "🇮🇳",
-    image: "https://images.unsplash.com/photo-1477587458883-47145ed68e5f?w=700&q=80",
+    image: "jaipur.jpeg",
     span: "normal",
   },
   {

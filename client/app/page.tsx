@@ -14,7 +14,7 @@ export default function Home() {
       <PageLoader /> 
       <ScrollToTop />
       <Hero />
-      <PackagesPage />
+      {/* <PackagesPage /> */}
       <TripPlanner />
       <TrendingDestinations />
       <WhyBookWithUs />
