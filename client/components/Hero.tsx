@@ -95,7 +95,7 @@ export default function HeroSection() {
             <div className="flex-1 w-full p-5 hover:bg-white/5 rounded-xl transition-all cursor-pointer group/item">
               <p className="text-[9px] text-[#e7d393] uppercase tracking-[0.3em] font-black mb-2 opacity-60 group-hover/item:opacity-100 transition-opacity">Departure</p>
               <DatePicker 
-                selected={date} onChange={(d) => setDate(d)}
+                selected={date} onChange={(d: any) => setDate(d)}
                 placeholderText="Select Date"
                 className="w-full bg-transparent outline-none placeholder:text-gray-600 font-light tracking-wide text-sm cursor-pointer"
               />
