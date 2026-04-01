@@ -3,7 +3,6 @@
 import { useState } from "react";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
-import { Sparkles } from "lucide-react";
 import { Message } from "@/types/chat";
 
 interface ChatWindowProps {
@@ -30,16 +29,42 @@ export default function ChatWindow({ isOpen }: ChatWindowProps) {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to get response");
+        // ✅ Handle error responses (which ARE JSON)
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to get response");
+        } else {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
       }
 
-      const data = await response.json();
-      
-      setMessages([
-        ...newMessages,
-        { role: "assistant", content: data.message },
-      ]);
+      // ✅ Handle streaming text response (NOT JSON)
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error("No reader available");
+      }
+
+      const decoder = new TextDecoder();
+      let assistantMessage = "";
+
+      // Add empty assistant message
+      setMessages([...newMessages, { role: "assistant", content: "" }]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        // ✅ Decode the chunk as plain text (NOT JSON)
+        const chunk = decoder.decode(value, { stream: true });
+        assistantMessage += chunk;
+
+        // Update the last message with streaming content
+        setMessages([
+          ...newMessages,
+          { role: "assistant", content: assistantMessage },
+        ]);
+      }
 
     } catch (error) {
       console.error("Error:", error);
