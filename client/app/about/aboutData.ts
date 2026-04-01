@@ -69,7 +69,7 @@ export const teamMembers: TeamMember[] = [
     name: "Pari Lakhera",
     role: "Web Developer",
     year: "1st",
-    image: "/team/PariLakhera.jpg",
+    image: "/team/PariLakhera.jpeg",
     socialLinks: {
       instagram: "https://www.instagram.com/parrriii_07",
       linkedin:"",
@@ -93,7 +93,7 @@ export const teamMembers: TeamMember[] = [
     name: "Aditya Singh Chauhan",
     role: "Machine learning Engineer",
     year: "1st",
-    image: "/team/Aditya_Singh_Chauhan.webp",
+    image: "/team/Aditya_Singh_Chauhan.jpeg",
     socialLinks: {
       instagram: "",
       linkedin: "https://www.linkedin.com/in/asc-net",

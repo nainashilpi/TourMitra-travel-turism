@@ -162,7 +162,7 @@ const TeamMemberCard = ({ member }: { member: TeamMember }) => (
     className="group relative bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden shadow-xl border border-white/20 hover:border-purple-500/50 hover:shadow-purple-500/25 hover:shadow-2xl transition-all duration-500"
   >
     {/* Image Section */}
-    <div className="relative h-64 overflow-hidden">
+    <div className="relative h-64 overflow-hidden h-[80%]">
       <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10" />
       <Image
         src={member.image}
@@ -419,7 +419,7 @@ export default function AboutPage() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerContainer}
-            className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 h-[80rem]"
           >
             {teamMembers.map((member) => (
               <TeamMemberCard key={member.id} member={member} />
