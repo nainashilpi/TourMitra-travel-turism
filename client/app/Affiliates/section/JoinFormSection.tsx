@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 export default function JoinFormSection() {
   const [submitted, setSubmitted] = useState(false);
@@ -17,156 +19,151 @@ export default function JoinFormSection() {
   };
 
   return (
-    <section id="join-form" className="py-28 px-6 bg-gradient-to-r from-slate-900 via-blue-950 ">
-      <div className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
-          {/* Left content */}
-          <div>
-            <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-amber-600 mb-4">
+    <section id="join-form" className="relative py-32 px-6 bg-[#050505] overflow-hidden">
+      
+      {/* ── BACKGROUND IMAGE (Dimmed & Grayscale) ── */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074" 
+          alt="Background" 
+          className="w-full h-full object-cover opacity-10 grayscale"
+        />
+        {/* Dynamic Glow (Login Style) */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#e7d393]/5 blur-[120px] rounded-full pointer-events-none" />
+      </div>
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          
+          {/* ── LEFT CONTENT (Original Structure) ── */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="inline-block text-[10px] font-black tracking-[0.4em] uppercase text-[#e7d393] mb-6">
               Get Started
             </span>
-            <h2
-              className="text-4xl md:text-5xl font-bold text-[#cdd1da] mb-6 leading-tight"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Ready to grow with{" "}
-              <span className="text-amber-500">TripMitra?</span>
+            <h2 className="text-5xl md:text-7xl font-light text-white mb-8 tracking-tighter leading-[0.9]">
+              Ready to grow with <br />
+              <span className="text-[#e7d393] font-bold italic tracking-tight">TourMitra?</span>
             </h2>
-            <p className="text-[#6b7280] text-lg leading-relaxed mb-8">
+            <p className="text-white/40 text-lg font-light leading-relaxed mb-10 max-w-md">
               Fill out the form and our partnership team will reach out within 24 hours.
               No commitment required.
             </p>
 
-            {/* Testimonial */}
-            <div className="bg-white rounded-2xl p-6 border border-[#f0ece4]" style={{ boxShadow: "0 2px 16px rgba(0,0,0,0.06)" }}>
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center text-xl flex-shrink-0">
+            {/* Testimonial (Glassy Dark) */}
+            <div className="bg-white/[0.02] rounded-[2.5rem] p-8 border border-white/5 backdrop-blur-md shadow-2xl transition-all hover:border-white/10 group">
+              <div className="flex items-start gap-5">
+                <div className="w-12 h-12 rounded-2xl bg-[#e7d393]/10 flex items-center justify-center text-xl flex-shrink-0 border border-[#e7d393]/20">
                   🏨
                 </div>
                 <div>
-                  <p className="text-[#374151] text-sm italic leading-relaxed mb-3">
-                    "Joining TripMitra doubled our occupancy in 3 months. The dashboard is incredibly intuitive and the support team is always available."
+                  <p className="text-white/50 text-sm italic leading-relaxed mb-4 font-light">
+                    "Joining TourMitra doubled our occupancy in 3 months. The dashboard is incredibly intuitive and the support team is always available."
                   </p>
                   <div>
-                    <div className="font-bold text-[#0f1629] text-sm">Ravi Sharma</div>
-                    <div className="text-[#9ca3af] text-xs">Owner, The Himalayan Lodge, Manali</div>
+                    <div className="font-bold text-white text-sm tracking-tight">Ravi Sharma</div>
+                    <div className="text-[#e7d393] text-[10px] font-black uppercase tracking-widest mt-1">Owner, The Himalayan Lodge</div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Form */}
-          <div className="bg-white rounded-3xl p-8 md:p-10 border border-[#f0ece4]" style={{ boxShadow: "0 4px 30px rgba(0,0,0,0.08)" }}>
+          {/* ── RIGHT FORM (Original Design - Dark Mode) ── */}
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="bg-[#0a0a0a]/80 rounded-[3rem] p-8 md:p-12 border border-white/5 backdrop-blur-2xl shadow-[0_30px_60px_rgba(0,0,0,0.5)]"
+          >
             {submitted ? (
-              <div className="flex flex-col items-center justify-center h-full py-12 text-center">
-                <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center text-3xl mb-5">
-                  ✅
+              <div className="flex flex-col items-center justify-center py-16 text-center">
+                <div className="w-16 h-16 rounded-full bg-[#e7d393]/10 flex items-center justify-center mb-6 border border-[#e7d393]/20">
+                  <CheckCircle2 className="text-[#e7d393]" size={32} />
                 </div>
-                <h3 className="text-2xl font-bold text-[#0f1629] mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  Application Received!
-                </h3>
-                <p className="text-[#6b7280] text-sm max-w-xs">
+                <h3 className="text-3xl font-bold text-white mb-4 tracking-tighter">Application Received!</h3>
+                <p className="text-white/40 text-sm max-w-xs font-light">
                   Our team will review your application and get back to you within 24 hours.
                 </p>
                 <button
-                  onClick={() => { setSubmitted(false); setForm({ name: "", email: "", businessType: "", message: "" }); }}
-                  className="mt-6 text-amber-600 text-sm font-semibold hover:underline"
+                  onClick={() => setSubmitted(false)}
+                  className="mt-8 text-[#e7d393] text-[10px] font-black uppercase tracking-[0.3em] hover:tracking-[0.5em] transition-all"
                 >
                   Submit another application
                 </button>
               </div>
             ) : (
               <>
-                <h3 className="text-xl font-bold text-[#0f1629] mb-6">
-                  Partner Application
-                </h3>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                  {/* Name */}
-                  <div>
-                    <label className="block text-xs font-bold text-[#374151] tracking-wide mb-2 uppercase">
-                      Full Name
-                    </label>
+                <h3 className="text-2xl font-bold text-white mb-8 tracking-tighter">Partner Application</h3>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                  
+                  <div className="space-y-2">
+                    <label className="block text-[9px] font-black text-white/30 tracking-[0.3em] uppercase ml-1">Full Name</label>
                     <input
                       type="text"
                       required
                       placeholder="Priya Mehta"
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="w-full px-4 py-3.5 rounded-xl border border-[#e5e7eb] text-[#374151] text-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition-all placeholder:text-[#d1d5db]"
+                      className="w-full bg-white/[0.03] border border-white/10 px-5 py-4 rounded-2xl text-white text-sm focus:outline-none focus:border-[#e7d393]/40 focus:bg-white/[0.05] transition-all placeholder:text-white/10"
                     />
                   </div>
 
-                  {/* Email */}
-                  <div>
-                    <label className="block text-xs font-bold text-[#374151] tracking-wide mb-2 uppercase">
-                      Business Email
-                    </label>
+                  <div className="space-y-2">
+                    <label className="block text-[9px] font-black text-white/30 tracking-[0.3em] uppercase ml-1">Business Email</label>
                     <input
                       type="email"
                       required
                       placeholder="priya@hotel.com"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="w-full px-4 py-3.5 rounded-xl border border-[#e5e7eb] text-[#374151] text-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition-all placeholder:text-[#d1d5db]"
+                      className="w-full bg-white/[0.03] border border-white/10 px-5 py-4 rounded-2xl text-white text-sm focus:outline-none focus:border-[#e7d393]/40 focus:bg-white/[0.05] transition-all placeholder:text-white/10"
                     />
                   </div>
 
-                  {/* Business Type */}
-                  <div>
-                    <label className="block text-xs font-bold text-[#374151] tracking-wide mb-2 uppercase">
-                      Business Type
-                    </label>
-                    <div className="relative">
-                      <select
-                        required
-                        value={form.businessType}
-                        onChange={(e) => setForm({ ...form, businessType: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl border border-[#e5e7eb] text-[#374151] text-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition-all appearance-none bg-white"
-                      >
-                        <option value="" disabled>Select your business type</option>
-                        <option>Hotel / Resort</option>
-                        <option>Hostel / Guesthouse</option>
-                        <option>Travel Agency</option>
-                        <option>Tour Operator</option>
-                        <option>Affiliate / Influencer</option>
-                        <option>Other</option>
-                      </select>
-                      <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9ca3af] pointer-events-none" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path d="M6 9l6 6 6-6" />
-                      </svg>
-                    </div>
+                  <div className="space-y-2">
+                    <label className="block text-[9px] font-black text-white/30 tracking-[0.3em] uppercase ml-1">Business Type</label>
+                    <select
+                      required
+                      value={form.businessType}
+                      onChange={(e) => setForm({ ...form, businessType: e.target.value })}
+                      className="w-full bg-white/[0.03] border border-white/10 px-5 py-4 rounded-2xl text-white text-sm focus:outline-none focus:border-[#e7d393]/40 transition-all appearance-none cursor-pointer"
+                    >
+                      <option value="" className="bg-[#0a0a0a]" disabled>Select your business type</option>
+                      <option className="bg-[#0a0a0a]">Hotel / Resort</option>
+                      <option className="bg-[#0a0a0a]">Travel Agency</option>
+                      <option className="bg-[#0a0a0a]">Tour Operator</option>
+                    </select>
                   </div>
 
-                  {/* Message */}
-                  <div>
-                    <label className="block text-xs font-bold text-[#374151] tracking-wide mb-2 uppercase">
-                      Tell Us About Your Business
-                    </label>
+                  <div className="space-y-2">
+                    <label className="block text-[9px] font-black text-white/30 tracking-[0.3em] uppercase ml-1">Business Abstract</label>
                     <textarea
                       rows={4}
-                      placeholder="Briefly describe your business, location, and what you're hoping to achieve..."
+                      placeholder="Briefly describe your objectives..."
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="w-full px-4 py-3.5 rounded-xl border border-[#e5e7eb] text-[#374151] text-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition-all resize-none placeholder:text-[#d1d5db]"
+                      className="w-full bg-white/[0.03] border border-white/10 px-5 py-4 rounded-2xl text-white text-sm focus:outline-none focus:border-[#e7d393]/40 transition-all resize-none placeholder:text-white/10"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full py-4 rounded-2xl bg-[#0f1629] text-white font-bold text-sm hover:bg-amber-500 transition-all duration-300 hover:shadow-lg mt-1"
+                    className="w-full py-5 rounded-2xl bg-[#e7d393] text-black font-black text-[11px] uppercase tracking-[0.3em] hover:scale-[1.02] active:scale-95 transition-all shadow-[0_20px_40px_rgba(231,211,147,0.1)] mt-2 flex items-center justify-center gap-2"
                   >
-                    Submit Application →
+                    Submit Application <ArrowRight size={14} />
                   </button>
 
-                  <p className="text-center text-xs text-[#9ca3af]">
-                    By submitting, you agree to our{" "}
-                    <a href="#" className="text-amber-500 hover:underline">Partner Terms</a>
+                  <p className="text-center text-[9px] text-white/20 font-bold uppercase tracking-[0.2em]">
+                    By submitting, you agree to our <a href="#" className="text-[#e7d393] hover:underline">Partner Terms</a>
                   </p>
                 </form>
               </>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

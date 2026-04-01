@@ -10,11 +10,10 @@ interface ChatMessage {
 }
 
 const chatMessages: ChatMessage[] = [
-  { id: "1", from: "user", text: "Hi, I need some help with my booking.", delay: 200 },
-  { id: "2", from: "support", text: "Hi 👋 We're here to help. Please share your booking ID so we can check the details.", delay: 700 },
-  { id: "3", from: "user", text: "Here is my booking PNR – BKD93735638", delay: 1300 },
-  { id: "4", from: "support", text: "Thanks. We've reviewed your booking. Let us coordinate and get back to you shortly.", delay: 1900 },
-  { id: "5", from: "support", text: "We've checked with our partners and reconfirmed the details. Everything is aligned now.", delay: 2600 },
+  { id: "1", from: "user", text: "Hi, I need some help with my booking.", delay: 500 },
+  { id: "2", from: "support", text: "Hi 👋 We're here to help. Share your booking ID please.", delay: 1500 },
+  { id: "3", from: "user", text: "PNR – BKD93735638", delay: 2500 },
+  { id: "4", from: "support", text: "Reviewing... Everything is reconfirmed now. Enjoy!", delay: 3500 },
 ];
 
 interface Feature {
@@ -25,49 +24,11 @@ interface Feature {
 }
 
 const features: Feature[] = [
-  {
-    id: "human",
-    icon: "⚡",
-    title: "Human Support, Not Ticket Numbers",
-    description: "You're assisted by real people who understand your booking, not automated responses or disconnected vendors.",
-  },
-  {
-    id: "onground",
-    icon: "✓",
-    title: "On-Ground Coordination in Critical Situations",
-    description: "Support during delays, missed confirmations, medical issues, or other unforeseen events while travelling.",
-  },
-  {
-    id: "access",
-    icon: "💬",
-    title: "24×7 Access to Our Operations Team",
-    description: "Reach our team anytime via WhatsApp or call for clarity, reassurance, or intervention.",
-  },
-  {
-    id: "accountability",
-    icon: "🔒",
-    title: "Accountability Beyond Booking",
-    description: "We don't disappear after payment. Our responsibility continues through your journey.",
-  },
+  { id: "human", icon: "⚡", title: "Human Support", description: "Real people who understand you, not automated ticket numbers." },
+  { id: "onground", icon: "✓", title: "On-Ground Coordination", description: "Active support during delays or medical emergencies." },
+  { id: "access", icon: "💬", title: "24×7 Direct Access", description: "Reach our ops team anytime via WhatsApp or Call." },
+  { id: "accountability", icon: "🔒", title: "Pure Accountability", description: "Our responsibility continues until you reach home." },
 ];
-
-function useInView(threshold = 0.2) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) { setInView(true); obs.disconnect(); }
-      },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
-}
 
 function PhoneMockup({ inView }: { inView: boolean }) {
   const [visibleMessages, setVisibleMessages] = useState<string[]>([]);
@@ -82,75 +43,38 @@ function PhoneMockup({ inView }: { inView: boolean }) {
   }, [inView]);
 
   return (
-    <div
-      className="relative transition-all duration-1000 "
-      
-    >
-      {/* Phone shell */}
-      <div
-        className="relative bg-gray-900 rounded-[40px] p-3 shadow-2xl w-64 md:w-72 mx-auto"
-        style={{ boxShadow: "0 30px 80px -20px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05)" }}
-      >
+    <div className="relative">
+      <div className="relative bg-[#111] rounded-[40px] p-3 shadow-2xl w-64 md:w-72 mx-auto border border-white/10">
         {/* Notch */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-6 bg-gray-900 rounded-full z-10 flex items-center justify-center gap-3">
-          <div className="w-12 h-4 bg-black rounded-full" />
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-5 bg-[#111] rounded-full z-20 flex items-center justify-center">
+            <div className="w-8 h-2 bg-black rounded-full" />
         </div>
 
         {/* Screen */}
-        <div className="bg-white rounded-[32px] overflow-hidden" style={{ minHeight: 480 }}>
-          {/* Status bar */}
-          <div className="bg-white px-5 pt-7 pb-2 flex items-center justify-between">
-            <span className="text-xs font-bold text-gray-900">9:41</span>
-            <div className="flex items-center gap-1">
-              <span className="text-xs">▌▌▌</span>
-              <span className="text-xs">WiFi</span>
-              <span className="text-xs">🔋</span>
-            </div>
+        <div className="bg-[#f5f5f5] rounded-[32px] overflow-hidden flex flex-col h-[480px]">
+          <div className="px-5 pt-8 pb-2 flex justify-between bg-white text-[10px] font-bold">
+            <span>9:41</span>
+            <span>🔋</span>
           </div>
 
-          {/* Chat header */}
-          <div className="bg-white border-b border-gray-100 px-4 py-2 flex items-center gap-2">
-            <button className="text-gray-600 text-sm">←</button>
-            <div className="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center text-xs font-bold text-orange-600">T</div>
-            <span className="text-xs font-bold text-gray-900">TripMitra Travel Support</span>
+          <div className="bg-white border-b px-4 py-3 flex items-center gap-2">
+            <div className="w-7 h-7 rounded-full bg-[#e7d393] flex items-center justify-center text-[10px] font-black">TM</div>
+            <span className="text-[10px] font-bold">TourMitra Support</span>
           </div>
 
-          {/* Messages */}
-          <div className="px-3 py-3 flex flex-col gap-2 bg-gray-50" style={{ minHeight: 360 }}>
+          <div className="p-3 space-y-2 flex-1 bg-gray-50 overflow-y-auto no-scrollbar">
             {chatMessages.map((msg) => {
-              const visible = visibleMessages.includes(msg.id);
+              const isVisible = visibleMessages.includes(msg.id);
               return (
-                <div
-                  key={msg.id}
-                  className={`flex items-end gap-1.5 transition-all duration-500 ${msg.from === "user" ? "justify-end" : "justify-start"}`}
-                  style={{
-                    opacity: visible ? 1 : 0,
-                    transform: visible ? "translateY(0)" : "translateY(10px)",
-                  }}
+                <div key={msg.id} 
+                  className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"} transition-all duration-500`}
+                  style={{ opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(10px)" }}
                 >
-                  {msg.from === "support" && (
-                    <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white text-[9px] font-bold flex-shrink-0 mb-0.5">
-                      T
-                    </div>
-                  )}
-                  <div
-                    className="max-w-[80%] px-3 py-2 rounded-2xl text-[11px] leading-relaxed shadow-sm"
-                    style={{
-                      background: msg.from === "user" ? "#F97316" : "#FFFFFF",
-                      color: msg.from === "user" ? "#fff" : "#1f2937",
-                      borderRadius: msg.from === "user" ? "16px 16px 4px 16px" : "4px 16px 16px 16px",
-                    }}
+                  <div className={`max-w-[85%] px-3 py-2 rounded-2xl text-[10px] leading-tight shadow-sm
+                    ${msg.from === "user" ? "bg-[#e7d393] text-black rounded-br-none" : "bg-white text-gray-800 rounded-bl-none"}`}
                   >
-                    {msg.from === "support" && (
-                      <p className="text-orange-500 font-bold text-[9px] mb-0.5">TripMitra</p>
-                    )}
                     {msg.text}
                   </div>
-                  {msg.from === "user" && (
-                    <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-white text-[9px] font-bold flex-shrink-0 mb-0.5">
-                      K
-                    </div>
-                  )}
                 </div>
               );
             })}
@@ -161,93 +85,55 @@ function PhoneMockup({ inView }: { inView: boolean }) {
   );
 }
 
-function FeatureBox({ feature, index, inView }: { feature: Feature; index: number; inView: boolean }) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="bg-white rounded-2xl p-5 flex items-start gap-4 transition-all duration-500 cursor-pointer"
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? "translateX(0)" : "translateX(40px)",
-        transitionDelay: `${index * 150 + 300}ms`,
-        boxShadow: hovered
-          ? "0 12px 40px -8px rgba(249,115,22,0.2)"
-          : "0 2px 12px rgba(0,0,0,0.06)",
-        border: hovered ? "1.5px solid rgba(249,115,22,0.2)" : "1.5px solid transparent",
-      }}
-    >
-      <div
-        className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-lg transition-transform duration-300"
-        style={{
-          background: hovered ? "rgba(249,115,22,0.12)" : "rgba(249,115,22,0.08)",
-          transform: hovered ? "scale(1.1) rotate(-5deg)" : "scale(1)",
-        }}
-      >
-        {feature.icon}
-      </div>
-      <div>
-        <h3 className="font-bold text-gray-900 text-sm mb-1">{feature.title}</h3>
-        <p className="text-gray-500 text-xs leading-relaxed">{feature.description}</p>
-      </div>
-    </div>
-  );
-}
-
 export default function TravelSupport() {
-  const { ref, inView } = useInView(0.15);
+  const [inView, setInView] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setInView(true);
+    }, { threshold: 0.1 });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section
-      ref={ref}
-      className="w-full py-16 px-4 md:px-8 bg-gradient-to-r from-slate-900 via-blue-950"
+    <section ref={ref} className="w-full py-20 px-6 bg-[#0a0a0a] relative overflow-hidden">
+      {/* Background Blur Effect (Not too dark) */}
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,#1e293b_0%,transparent_70%)] opacity-40" />
       
-    >
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left: Phone */}
-          <div className="flex justify-center lg:justify-end">
-            <PhoneMockup inView={inView} />
+      <div className="max-w-6xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        
+        {/* Left: Phone */}
+        <div className="flex justify-center lg:justify-end">
+          <PhoneMockup inView={inView} />
+        </div>
+
+        {/* Right: Content */}
+        <div>
+          <div className="mb-10 transition-all duration-1000" 
+            style={{ opacity: inView ? 1 : 0, transform: inView ? "translateY(0)" : "translateY(20px)" }}>
+            <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tighter leading-tight mb-4">
+              When Something Unexpected <br /> Happens, <span className="text-[#e7d393] italic">We're There</span>
+            </h2>
+            <p className="text-gray-400 text-sm max-w-md">
+              On-ground teams and real humans supporting you. Help when it truly matters.
+            </p>
           </div>
 
-          {/* Right: Text + Features */}
-          <div>
-            <div
-              className="mb-8 transition-all duration-700"
-              style={{
-                opacity: inView ? 1 : 0,
-                transform: inView ? "translateY(0)" : "translateY(24px)",
-              }}
-            >
-              <h2 className="text-2xl md:text-3xl font-extrabold text-gray-100 leading-tight mb-3">
-                When Something Unexpected
-                <br />
-                Happens, We're There
-              </h2>
-              <p className="text-gray-500 text-sm leading-relaxed">
-                On-ground teams and real humans supporting you, before, during,
-                and after your tour. Help when it truly matters.
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              {features.map((f, i) => (
-                <FeatureBox key={f.id} feature={f} index={i} inView={inView} />
-              ))}
-            </div>
-
-            {/* Footer quote */}
-            <p
-              className="text-xs text-gray-400 italic mt-6 text-center transition-all duration-700"
-              style={{
-                opacity: inView ? 1 : 0,
-                transitionDelay: "900ms",
-              }}
-            >
-              "All changes and confirmations are handled by TripMitra-operated teams, not third-party vendors."
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {features.map((f, i) => (
+              <div key={f.id} 
+                className="bg-white/5 border border-white/10 p-5 rounded-3xl backdrop-blur-xl hover:bg-white/10 transition-all cursor-pointer group"
+                style={{ opacity: inView ? 1 : 0, transform: inView ? "translateY(0)" : "translateY(20px)", transitionDelay: `${i * 100}ms` }}
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#e7d393]/10 flex items-center justify-center text-[#e7d393] mb-3 group-hover:scale-110 transition-transform">
+                  {f.icon}
+                </div>
+                <h3 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{f.title}</h3>
+                <p className="text-gray-500 text-[10px] leading-relaxed">{f.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
