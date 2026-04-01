@@ -1,19 +1,27 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Message } from "@/types/chat";
 
-if (!process.env.GEMINI_API_KEY) {
-  console.error("⚠️ GEMINI_API_KEY is not defined!");
+// ✅ Check for API key with detailed logging
+const API_KEY = process.env.GEMINI_API_KEY;
+
+console.log("🔑 Checking Gemini API Key...");
+console.log("API Key exists:", !!API_KEY);
+console.log("API Key length:", API_KEY?.length || 0);
+console.log("API Key starts with 'AIza':", API_KEY?.startsWith("AIza") || false);
+
+if (!API_KEY) {
+  console.error("❌ GEMINI_API_KEY environment variable is not set!");
+  console.error("Available env vars:", Object.keys(process.env).filter(k => k.includes('GEMINI')));
 }
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+const genAI = new GoogleGenerativeAI(API_KEY || "");
 
 export async function getChatResponse(messages: Message[]): Promise<string> {
   try {
-    if (!process.env.GEMINI_API_KEY) {
-      throw new Error("API key is not configured");
+    if (!API_KEY) {
+      throw new Error("GEMINI_API_KEY is not configured in environment variables. Please add it to your hosting platform settings.");
     }
 
-    // ✅ CHANGED TO MATCH YOUR API KEY'S ALLOWED MODELS
     const model = genAI.getGenerativeModel({ 
       model: "gemini-2.5-flash",
     });
@@ -45,18 +53,25 @@ export async function getChatResponse(messages: Message[]): Promise<string> {
     return response.text();
 
   } catch (error: any) {
-    console.error("Gemini API Error:", error);
+    console.error("❌ Gemini API Error:", error);
+    
+    if (error.message?.includes("API_KEY_INVALID")) {
+      throw new Error("Invalid API key. Please check your GEMINI_API_KEY");
+    }
+    if (error.message?.includes("PERMISSION_DENIED")) {
+      throw new Error("API key doesn't have permission. Please enable Gemini API");
+    }
+    
     throw new Error(error.message || "Failed to get response from AI");
   }
 }
 
 export async function getChatResponseStream(messages: Message[]) {
   try {
-    if (!process.env.GEMINI_API_KEY) {
-      throw new Error("API key is not configured");
+    if (!API_KEY) {
+      throw new Error("GEMINI_API_KEY is not configured in environment variables");
     }
 
-    // ✅ CHANGED TO MATCH YOUR API KEY'S ALLOWED MODELS
     const model = genAI.getGenerativeModel({ 
       model: "gemini-2.5-flash",
     });
@@ -86,7 +101,7 @@ export async function getChatResponseStream(messages: Message[]) {
     return result.stream;
 
   } catch (error: any) {
-    console.error("Gemini Streaming Error:", error);
+    console.error("❌ Gemini Streaming Error:", error);
     throw error;
   }
 }

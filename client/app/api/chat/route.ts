@@ -1,14 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getChatResponse } from "@/lib/gemini";
+import { getChatResponseStream } from "@/lib/gemini";
 import { Message } from "@/types/chat";
 
 export async function POST(req: NextRequest) {
   try {
+    // ✅ Log environment variables
+    console.log("🔍 API Route Environment Check:");
+    console.log("- GEMINI_API_KEY exists:", !!process.env.GEMINI_API_KEY);
+    console.log("- GEMINI_API_KEY length:", process.env.GEMINI_API_KEY?.length || 0);
+    console.log("- Node ENV:", process.env.NODE_ENV);
+    
     const body = await req.json();
     const { messages } = body as { messages: Message[] };
 
     console.log("📩 Received messages:", messages.length);
-    console.log("🔑 API Key exists:", !!process.env.GEMINI_API_KEY);
 
     if (!messages || !Array.isArray(messages)) {
       return NextResponse.json(
@@ -18,20 +23,41 @@ export async function POST(req: NextRequest) {
     }
 
     if (!process.env.GEMINI_API_KEY) {
-      console.error("❌ GEMINI_API_KEY is not set!");
+      console.error("❌ GEMINI_API_KEY is not set in environment!");
+      console.error("Available env vars:", Object.keys(process.env).filter(k => k.includes('GEM')));
+      
       return NextResponse.json(
-        { error: "API key not configured" },
+        { error: "API key not configured. Please add GEMINI_API_KEY to environment variables." },
         { status: 500 }
       );
     }
 
-    // Get simple response (non-streaming for testing)
-    const response = await getChatResponse(messages);
-    
-    console.log("✅ Got response:", response.substring(0, 50) + "...");
+    // Get streaming response
+    const stream = await getChatResponseStream(messages);
 
-    return NextResponse.json({ message: response });
+    // Create a ReadableStream for the response
+    const encoder = new TextEncoder();
+    const readableStream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of stream) {
+            const text = chunk.text();
+            controller.enqueue(encoder.encode(text));
+          }
+          controller.close();
+        } catch (error) {
+          console.error("❌ Stream error:", error);
+          controller.error(error);
+        }
+      },
+    });
 
+    return new Response(readableStream, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+      },
+    });
   } catch (error) {
     console.error("❌ Chat API Error:", error);
     
