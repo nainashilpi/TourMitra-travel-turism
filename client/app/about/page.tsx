@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion"; // Variants import kiya
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import Image from "next/image";
 import { 
   ArrowUpRight, 
@@ -28,7 +28,6 @@ const InstagramIcon = ({ size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
 );
 
-// Variants definition with proper naming
 const fader: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
@@ -66,7 +65,7 @@ const TeamMemberCard = ({ member, isMentor = false }: { member: TeamMember | Fou
 
       <div className="absolute bottom-10 left-10 right-10 z-10 group-hover:opacity-20 transition-opacity">
         <span className="text-[#e7d393]/50 text-[8px] font-black uppercase tracking-[0.3em] mb-2 block">
-           {isMentor ? 'Lead Mentor' : `${(member as TeamMember).year || 'Core'} Year`}
+           {isMentor ? 'Lead Mentor' : `${(member as TeamMember).year || ''} Year`}
         </span>
         <h4 className="text-3xl font-bold text-white tracking-tighter mb-1 leading-none">{member.name}</h4>
         <p className="text-white/30 text-[10px] font-medium uppercase tracking-widest">{member.role}</p>
