@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: "/Affiliates", key: "Affiliates", label: "Affiliates" },
   { href: "/contact", key: "contact_us", label: "Contact Us" },
   { href: '/about', key: 'about', label: 'about' },
+  // { href: '/main', key: 'about', label: 'main' },
 
 ];
 
