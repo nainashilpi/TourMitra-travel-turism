@@ -1,209 +1,190 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 interface Feature {
   id: string;
   icon: string;
   title: string;
   description: string;
-  accent: string;
 }
 
 const features: Feature[] = [
   {
     id: "pay-later",
     icon: "📅",
-    title: "Book now, pay at the property",
-    description: "FREE cancellation on most bookings",
-    accent: "#3B82F6",
+    title: "Book now, pay later",
+    description: "Experience flexible luxury with FREE cancellation on most elite bookings.",
   },
   {
     id: "reviews",
-    icon: "👍",
-    title: "300M+ reviews from fellow travellers",
-    description: "Get trusted information from guests like you",
-    accent: "#F59E0B",
+    icon: "⭐",
+    title: "300M+ Global Reviews",
+    description: "Trusted insights from a community of world-class fellow travellers.",
   },
   {
     id: "properties",
     icon: "🌍",
-    title: "2+ million properties worldwide",
-    description: "Hotels, guest houses, apartments, and more...",
-    accent: "#10B981",
+    title: "2M+ Managed Properties",
+    description: "From private villas to heritage suites, access the world's finest stays.",
   },
   {
     id: "support",
     icon: "🎧",
-    title: "Trusted customer service you can rely on, 24/7",
-    description: "We're always here to help",
-    accent: "#8B5CF6",
+    title: "24/7 Elite Concierge",
+    description: "Human-led intervention for seamless transitions throughout your journey.",
   },
 ];
 
-interface Offer {
-  id: string;
-  tag: string;
-  title: string;
-  description: string;
-  cta: string;
-  image: string;
-  bg: string;
-}
-
-const offers: Offer[] = [
+const offers = [
   {
     id: "early-deals",
-    tag: "Early 2026 Deals",
-    title: "At least 15% off",
-    description: "Save on your next stay with Early 2026 Deals. Book now, stay until 1 April 2026.",
-    cta: "Explore deals",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80",
-    bg: "#F8FAFC",
+    tag: "Seasonal Privilege",
+    title: "The Early 2026 Collection",
+    description: "Secure your next legacy stay with at least 15% off. Valid until April 1, 2026.",
+    cta: "Explore Collection",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
   },
   {
     id: "getaway",
-    tag: "Escape for less with our Getaway Deals",
-    title: "No catch. Just getaways.",
-    description: "At least 15% off select stays worldwide – just book and go.",
-    cta: "Save with a Getaway Deal",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80",
-    bg: "#F8FAFC",
+    tag: "Bespoke Escapes",
+    title: "Uncompromising Getaways",
+    description: "Hand-picked sanctuaries worldwide with exclusive member-only benefits.",
+    cta: "Secure Access",
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
   },
 ];
 
-function useInView(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect(); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
-}
-
-function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
-  const [hovered, setHovered] = useState(false);
-  const { ref, inView } = useInView();
-
-  return (
-    <div
-      ref={ref}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="relative rounded-2xl p-6 cursor-pointer overflow-hidden transition-all duration-500 bg-gradient-to-r from-slate-900 via-blue-950 to-black"
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? "translateY(0)" : "translateY(32px)",
-        transitionDelay: `${index * 100}ms`,
-        boxShadow: hovered ? `0 12px 40px -8px ${feature.accent}40` : "0 1px 4px rgba(0,0,0,0.06)",
-        border: hovered ? `1.5px solid ${feature.accent}30` : "1.5px solid transparent",
-      }}
-    >
-      {/* Animated BG blob on hover */}
-      <div
-        className="absolute -top-8 -right-8 w-24 h-24 rounded-full  blur-2xl transition-opacity duration-500 pointer-events-none "
-        style={{ background: feature.accent, opacity: hovered ? 0.12 : 0 }}
-      />
-
-      <div
-        className="text-4xl mb-4 transition-transform duration-300"
-        style={{ transform: hovered ? "scale(1.2) rotate(-5deg)" : "scale(1) rotate(0deg)" }}
-      >
-        {feature.icon}
-      </div>
-      <h3 className="font-bold text-white text-base leading-snug mb-2">{feature.title}</h3>
-      <p className="text-gray-300 text-sm">{feature.description}</p>
-
-      {/* Bottom accent bar */}
-      <div
-        className="absolute bottom-0 left-0 h-0.5 transition-all duration-500 rounded-full"
-        style={{
-          background: feature.accent,
-          width: hovered ? "100%" : "0%",
-        }}
-      />
-    </div>
-  );
-}
-
-function OfferCard({ offer, index }: { offer: Offer; index: number }) {
-  const [hovered, setHovered] = useState(false);
-  const { ref, inView } = useInView();
-
-  return (
-    <div
-      ref={ref}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="relative rounded-2xl border bg-gradient-to-r from-slate-900 via-blue-950 to-black  border-gray-200 p-6  overflow-hidden flex items-center justify-between gap-4 cursor-pointer transition-all duration-500 "
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? "translateY(0)" : "translateY(24px)",
-        transitionDelay: `${index * 150}ms`,
-        boxShadow: hovered ? "0 16px 48px -12px rgba(59,130,246,0.2)" : "none",
-      
-      }}
-    >
-      <div className="flex-1 min-w-0 ">
-        <p className="text-xs text-gray-400 font-medium mb-1">{offer.tag}</p>
-        <h3 className="text-xl font-extrabold text-gray-300 mb-2">{offer.title}</h3>
-        <p className="text-sm text-gray-500 mb-4 leading-relaxed">{offer.description}</p>
-        <button className="bg-[#ac9c68] hover:bg-blue-700 text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-all duration-200 active:scale-95">
-          {offer.cta}
-        </button>
-      </div>
-      <div className="flex-shrink-0 w-28 h-24 md:w-36 md:h-28 rounded-xl overflow-hidden">
-        <img
-          src={offer.image}
-          alt={offer.title}
-          className="w-full h-full object-cover transition-transform duration-500"
-          style={{ transform: hovered ? "scale(1.1)" : "scale(1)" }}
-        />
-      </div>
-    </div>
-  );
-}
-
 export default function WhyBookWithUs() {
-  const { ref: titleRef, inView: titleInView } = useInView(0.1);
-
   return (
-    <section className="w-full py-14 px-4 md:px-8 bg-white">
-      <div className="max-w-7xl mx-auto">
-        {/* Heading */}
-        <div
-          ref={titleRef}
-          className="transition-all duration-700"
-          style={{ opacity: titleInView ? 1 : 0, transform: titleInView ? "translateY(0)" : "translateY(20px)" }}
+    /* Background opacity ko /90 se /60 kar diya hai taaki piche ka background halka dikhe */
+    <section className="relative z-10 py-28 bg-[#0a0a0a]/60 backdrop-blur-xl border-t border-white/5 overflow-hidden">
+      <div className="container mx-auto px-6 max-w-5xl">
+        
+        {/* ── HEADING SECTION ── */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="mb-16"
         >
-          <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-8">
-            Why Book with TripMitra?
+          <h2 className="text-[#e7d393] font-bold tracking-[0.4em] uppercase text-[10px] mb-4">
+            The TourMitra Advantage
           </h2>
-        </div>
+          <h2 className="text-5xl md:text-6xl font-semibold tracking-tighter mb-6 text-white leading-none">
+            Why Journey <br /> With <span className="text-[#e7d393] italic">Us?</span>
+          </h2>
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: "80px" }}
+            transition={{ duration: 1.2, delay: 0.5 }}
+            className="h-[1px] bg-[#e7d393]" 
+          />
+        </motion.div>
 
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+        {/* ── FEATURE CARDS GRID ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-32">
           {features.map((f, i) => (
-            <FeatureCard key={f.id} feature={f} index={i} />
+            <motion.div
+              key={f.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15, duration: 0.8, ease: "circOut" }}
+              whileHover={{ y: -10, backgroundColor: "rgba(255, 255, 255, 0.08)" }}
+              className="p-8 bg-white/5 border border-white/5 rounded-2xl transition-all duration-300 group cursor-default relative overflow-hidden"
+            >
+              {/* Subtle Inner Glow on Hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#e7d393]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <motion.div 
+                whileHover={{ scale: 1.2, rotate: 5 }}
+                className="text-3xl mb-8 block origin-left transition-transform duration-300"
+              >
+                {f.icon}
+              </motion.div>
+              <h3 className="text-[#e7d393] font-bold text-lg mb-3 tracking-tight">{f.title}</h3>
+              <p className="text-gray-400 text-sm font-light leading-relaxed group-hover:text-gray-300 transition-colors">
+                {f.description}
+              </p>
+            </motion.div>
           ))}
         </div>
 
-        {/* Offers */}
-        <h2 className="text-2xl font-extrabold text-gray-900 mb-1">Offers</h2>
-        <p className="text-gray-500 text-sm mb-6">Promotions, deals and special offers for you</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* ── OFFERS HEADER ── */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-[#e7d393] font-bold tracking-[0.4em] uppercase text-[10px] mb-4">
+              Privileges
+            </h2>
+            <h2 className="text-5xl font-semibold tracking-tighter text-white">
+              Curated Offers
+            </h2>
+          </motion.div>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="text-gray-500 font-light italic max-w-xs text-right hidden md:block text-sm"
+          >
+            Promotions and bespoke deals designed for your next discovery.
+          </motion.p>
+        </div>
+
+        {/* ── OFFERS CARDS ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {offers.map((o, i) => (
-            <OfferCard key={o.id} offer={o} index={i} />
+            <motion.div
+              key={o.id}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="relative rounded-3xl border border-white/10 bg-white/5 overflow-hidden group flex flex-col sm:flex-row items-stretch shadow-2xl"
+            >
+              <div className="flex-1 p-10 z-10 flex flex-col justify-center">
+                <p className="text-[9px] text-[#e7d393] font-bold uppercase tracking-[0.3em] mb-4">
+                  {o.tag}
+                </p>
+                <h3 className="text-2xl font-semibold text-white mb-4 tracking-tight group-hover:text-[#e7d393] transition-colors duration-300">
+                  {o.title}
+                </h3>
+                <p className="text-gray-400 text-sm font-light leading-relaxed mb-8">
+                  {o.description}
+                </p>
+                <div>
+                  <motion.button 
+                    whileHover={{ scale: 1.05, backgroundColor: "#fff" }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-[#e7d393] text-black text-[10px] font-black px-8 py-4 rounded-xl transition-all uppercase tracking-[0.2em] shadow-xl shadow-[#e7d393]/10"
+                  >
+                    {o.cta}
+                  </motion.button>
+                </div>
+              </div>
+              
+              <div className="w-full sm:w-56 h-64 sm:h-auto overflow-hidden relative">
+                <motion.img
+                  whileHover={{ scale: 1.15 }}
+                  transition={{ duration: 1.5 }}
+                  src={o.image}
+                  alt={o.title}
+                  className="w-full h-full object-cover grayscale-[40%] group-hover:grayscale-0 transition-all duration-1000"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#0a0a0a] via-transparent to-transparent opacity-80 sm:opacity-100" />
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
+
+      {/* Background Decorative Element */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#e7d393]/5 blur-[120px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/2" />
     </section>
   );
 }

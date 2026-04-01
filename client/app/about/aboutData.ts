@@ -36,21 +36,21 @@ export interface Post {
 export const founders: Founder[] = [
   {
     id: "founder-1",
-    name: "Nynaa Shilpi",
+    name: "Naina Shilpi",
     role: "Founder & CEO",
     year:"3rd",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+    image: "/team/Naina_shilpi.jpg",
     bio: "",
     socialLinks: {
-      instagram: "https://instagram.com/arjunsharma",
-      linkedin: "https://linkedin.com/in/arjunsharma",
-      github: "https://github.com/arjunsharma",
+      instagram: "https://www.instagram.com/____nynaa__/",
+      linkedin: "https://www.linkedin.com/in/nainashilpi",
+      github: "https://github.com/nainashilpi",
     },
   },
   {
     id: "team-29",
     name: "Atisha Jain",
-    role: "Head",
+    role: "Founder & CEO",
     year:"3rd",
   image: "/team/Atisha_Jain.jpg",
   bio:"",
