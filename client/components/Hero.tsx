@@ -41,7 +41,7 @@ export default function HeroSection() {
       <div className="fixed inset-0 z-0">
         <img 
           src="/tourists.png" 
-          className="w-full h-full object-cover opacity-50 grayscale-[20%]" 
+          className="w-full h-full  object-cover opacity-50 grayscale-[20%]" 
           alt="Luxury Travel"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/40 via-[#0a0a0a]/70 to-[#0a0a0a]" />

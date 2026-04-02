@@ -186,6 +186,32 @@ export const teamMembers: TeamMember[] = [
       github: "https://github.com/sahilmns",
     },
   },
+  {
+    id: "team-48",
+    name: "Ayushi Sahu",
+    role: "Cloud and Develop & Photography",
+    year: "2nd",
+    image: "/team/AyushiSahu.jpeg",
+    socialLinks: {
+      
+      instagram: "",
+      linkedin: "",
+      github: "",
+    },
+  },
+  {
+    id: "team-49",
+    name: "Faizyaab Alam ",
+    role: "CR",
+    year: "1st",
+    image: "/team/FaizyaabAlam.jpeg",
+    socialLinks: {
+      
+      instagram: "https://www.instagram.com/just_faizyaab?igsh=N3VjYmY5eWc3azZt",
+      linkedin: "https://www.linkedin.com/in/faizyaabalam29",
+      github: "https://github.com/faizyA786",
+    },
+  },
 
 ];
 

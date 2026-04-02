@@ -7,7 +7,7 @@ import DashboardPreviewSection from "./section/DashboardPreviewSection";
 
 export default function PartnersPage() {
   return (
-    <div className="space-y-16">
+    <div  className=" flex flex-col w-full min-h-screen overflow-x-hidden">
       <HeroSection />
       <WhyPartnerSection />
       <MarqueeSection />

@@ -44,40 +44,75 @@ function PhoneMockup({ inView }: { inView: boolean }) {
 
   return (
     <div className="relative">
-      <div className="relative bg-[#111] rounded-[40px] p-3 shadow-2xl w-64 md:w-72 mx-auto border border-white/10">
-        {/* Notch */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-5 bg-[#111] rounded-full z-20 flex items-center justify-center">
-            <div className="w-8 h-2 bg-black rounded-full" />
-        </div>
-
-        {/* Screen */}
-        <div className="bg-[#f5f5f5] rounded-[32px] overflow-hidden flex flex-col h-[480px]">
-          <div className="px-5 pt-8 pb-2 flex justify-between bg-white text-[10px] font-bold">
-            <span>9:41</span>
-            <span>🔋</span>
+      {/* ✅ Bronze/Warm Metal Frame */}
+      <div className="relative bg-gradient-to-br from-[#3d352a] via-[#2a2520] to-[#1f1b17] rounded-[44px] p-[2px] shadow-2xl w-64 md:w-72 mx-auto border border-[#e7d393]/20">
+        
+        {/* Gold Accent Ring */}
+        <div className="absolute inset-0 rounded-[44px] border border-[#e7d393]/30 pointer-events-none" />
+        
+        <div className="bg-gradient-to-b from-[#1a1815] to-[#0f0d0b] rounded-[42px] p-3">
+          
+          {/* Notch with gold accent */}
+          <div className="absolute top-5 left-1/2 -translate-x-1/2 w-20 h-5 bg-[#1a1815] rounded-full z-20 flex items-center justify-center border-b border-[#e7d393]/10">
+            <div className="w-8 h-2 bg-[#0a0a0a] rounded-full" />
           </div>
 
-          <div className="bg-white border-b px-4 py-3 flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-[#e7d393] flex items-center justify-center text-[10px] font-black">TM</div>
-            <span className="text-[10px] font-bold">TourMitra Support</span>
-          </div>
+          {/* Screen */}
+          <div className="bg-[#0a0a0a] rounded-[32px] overflow-hidden flex flex-col h-[480px]">
+            
+            {/* Status Bar */}
+            <div className="px-5 pt-8 pb-2 flex justify-between text-[10px] font-bold text-[#e7d393]/60 bg-transparent">
+              <span>9:41</span>
+              <span>📶 🔋</span>
+            </div>
 
-          <div className="p-3 space-y-2 flex-1 bg-gray-50 overflow-y-auto no-scrollbar">
-            {chatMessages.map((msg) => {
-              const isVisible = visibleMessages.includes(msg.id);
-              return (
-                <div key={msg.id} 
-                  className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"} transition-all duration-500`}
-                  style={{ opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(10px)" }}
-                >
-                  <div className={`max-w-[85%] px-3 py-2 rounded-2xl text-[10px] leading-tight shadow-sm
-                    ${msg.from === "user" ? "bg-[#e7d393] text-black rounded-br-none" : "bg-white text-gray-800 rounded-bl-none"}`}
-                  >
-                    {msg.text}
-                  </div>
+            {/* Chat Header */}
+            <div className="bg-white/[0.02] border-b border-white/5 px-4 py-3 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-[#e7d393]/10 border border-[#e7d393]/20 flex items-center justify-center text-[10px] font-black text-[#e7d393]">TM</div>
+              <div>
+                <span className="text-xs font-bold text-white">TourMitra Support</span>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  <span className="text-[8px] text-white/30 uppercase tracking-wider">Active Now</span>
                 </div>
-              );
-            })}
+              </div>
+            </div>
+
+            {/* Messages */}
+            <div className="p-4 space-y-3 flex-1 overflow-y-auto no-scrollbar">
+              {chatMessages.map((msg) => {
+                const isVisible = visibleMessages.includes(msg.id);
+                return (
+                  <div 
+                    key={msg.id} 
+                    className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"} transition-all duration-500`}
+                    style={{ 
+                      opacity: isVisible ? 1 : 0, 
+                      transform: isVisible ? "translateY(0)" : "translateY(10px)" 
+                    }}
+                  >
+                    <div className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-[11px] leading-relaxed
+                      ${msg.from === "user" 
+                        ? "bg-[#e7d393] text-black rounded-br-none font-medium shadow-[0_4px_20px_-5px_rgba(231,211,147,0.4)]" 
+                        : "bg-white/[0.03] border border-white/5 text-white/70 rounded-bl-none"
+                      }`}
+                    >
+                      {msg.text}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Input Bar */}
+            <div className="p-3 border-t border-white/5">
+              <div className="flex items-center gap-2 bg-white/[0.02] border border-white/10 rounded-2xl px-4 py-3">
+                <span className="text-[10px] text-white/20">Message...</span>
+                <div className="ml-auto w-7 h-7 rounded-xl bg-[#e7d393] flex items-center justify-center shadow-lg">
+                  <span className="text-xs text-black">↑</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

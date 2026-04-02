@@ -60,7 +60,7 @@ const Footer = () => {
             </p>
             <div className="flex gap-4">
               {[
-                { icon: <IconInsta />, href: "#" },
+                { icon: <IconInsta />, href: "https://www.instagram.com/tourmitra_travels/" },
                 { icon: <IconTwitter />, href: "#" },
                 { icon: <IconLinkedin />, href: "#" }
               ].map((social, index) => (
