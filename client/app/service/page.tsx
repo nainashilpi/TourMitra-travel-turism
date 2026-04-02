@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link"; // Navigation ke liye add kiya
 import { TRIPS, TravelGroup, Trip } from "@/constants/Tripsdata";
 import { 
   MapPin, Star, Search, ShieldCheck, 
@@ -41,7 +42,7 @@ export default function ServicesPage() {
   const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("popular");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Mobile toggle
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const clearFilters = () => {
     setBudget(300000);
@@ -73,7 +74,6 @@ export default function ServicesPage() {
     return result;
   }, [searchQuery, budget, selectedGroups, selectedDurations, selectedCats, sortBy]);
 
-  // Sidebar Content Component to avoid repetition
   const SidebarContent = () => (
     <div className="space-y-8">
       <div>
@@ -139,7 +139,6 @@ export default function ServicesPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/60 via-[#0a0a0a]/90 to-[#0a0a0a]" />
       </div>
 
-      {/* MOBILE SIDEBAR OVERLAY */}
       <AnimatePresence>
         {isSidebarOpen && (
           <>
@@ -165,7 +164,6 @@ export default function ServicesPage() {
 
       <div className="relative z-10 max-w-[1700px] mx-auto px-4 sm:px-6 pt-24 lg:pt-32 pb-20">
         
-        {/* Hero & Search */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 lg:mb-16 gap-8">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
             <div className="flex items-center gap-3 mb-4">
@@ -178,7 +176,6 @@ export default function ServicesPage() {
           </motion.div>
 
           <div className="flex items-center gap-4 w-full lg:max-w-md">
-            {/* Mobile Filter Trigger */}
             <button 
               onClick={() => setIsSidebarOpen(true)}
               className="lg:hidden bg-white/5 border border-white/10 p-4 rounded-full text-[#e7d393]"
@@ -199,15 +196,12 @@ export default function ServicesPage() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          
-          {/* DESKTOP SIDEBAR (Same as before) */}
           <aside className="hidden lg:block w-80 shrink-0">
             <div className="sticky top-28 bg-white/[0.03] border border-white/10 p-8 rounded-[3rem] backdrop-blur-xl">
               <SidebarContent />
             </div>
           </aside>
 
-          {/* MAIN GRID */}
           <main className="flex-1">
             <div className="flex flex-col sm:flex-row justify-between items-center mb-8 bg-white/[0.02] border border-white/5 p-2 rounded-2xl sm:rounded-3xl gap-4">
                <div className="px-4">
@@ -223,50 +217,50 @@ export default function ServicesPage() {
                </div>
             </div>
 
-            {/* RESPONSIVE GRID: 1 col on mobile, 2 on sm, 3 on md, 4 on xl */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
               <AnimatePresence mode="popLayout">
                 {displayed.map((trip, idx) => (
-                  <motion.div
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.5, delay: idx * 0.03 }}
-                    key={trip.id}
-                    className="group bg-white/[0.01] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#e7d393]/40 transition-all duration-700 shadow-2xl flex flex-col"
-                  >
-                    <div className="relative h-44 overflow-hidden">
-                      <img src={trip.image} alt={trip.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale-[30%] group-hover:grayscale-0" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-80" />
-                      <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-[7px] font-black uppercase tracking-tighter">
-                        {trip.days}D • {trip.nights}N
-                      </div>
-                    </div>
-
-                    <div className="p-6 flex flex-col flex-1">
-                      <div className="flex items-center gap-2 mb-3">
-                        <MapPin size={10} className="text-[#e7d393]" />
-                        <span className="text-[#e7d393] text-[9px] font-black uppercase tracking-widest">{trip.country}</span>
-                      </div>
-                      <h3 className="text-xl font-bold tracking-tighter italic mb-4 line-clamp-1 group-hover:text-[#e7d393] transition-colors">{trip.title}</h3>
-                      
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-1.5">
-                          <Star size={10} className="text-[#e7d393] fill-[#e7d393]" />
-                          <span className="text-[10px] font-black">{trip.rating}</span>
+                  <Link href={`/service/${trip.id}`} key={trip.id} className="block group"> 
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.5, delay: idx * 0.03 }}
+                      className="h-full bg-white/[0.01] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#e7d393]/40 transition-all duration-700 shadow-2xl flex flex-col"
+                    >
+                      <div className="relative h-44 overflow-hidden">
+                        <img src={trip.image} alt={trip.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale-[30%] group-hover:grayscale-0" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-80" />
+                        <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-[7px] font-black uppercase tracking-tighter">
+                          {trip.days}D • {trip.nights}N
                         </div>
-                        <span className="text-white/10 text-[8px] font-black uppercase tracking-tighter">{trip.category}</span>
                       </div>
 
-                      <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/5">
-                        <p className="text-xl font-black italic">₹{trip.price.toLocaleString()}</p>
-                        <motion.button whileTap={{ scale: 0.9 }} className="bg-white text-black p-3 rounded-2xl hover:bg-[#e7d393] transition-colors shadow-lg">
-                          <ChevronRight size={16} strokeWidth={3} />
-                        </motion.button>
+                      <div className="p-6 flex flex-col flex-1">
+                        <div className="flex items-center gap-2 mb-3">
+                          <MapPin size={10} className="text-[#e7d393]" />
+                          <span className="text-[#e7d393] text-[9px] font-black uppercase tracking-widest">{trip.country}</span>
+                        </div>
+                        <h3 className="text-xl font-bold tracking-tighter italic mb-4 line-clamp-1 group-hover:text-[#e7d393] transition-colors">{trip.title}</h3>
+                        
+                        <div className="flex items-center justify-between mb-6">
+                          <div className="flex items-center gap-1.5">
+                            <Star size={10} className="text-[#e7d393] fill-[#e7d393]" />
+                            <span className="text-[10px] font-black">{trip.rating}</span>
+                          </div>
+                          <span className="text-white/10 text-[8px] font-black uppercase tracking-tighter">{trip.category}</span>
+                        </div>
+
+                        <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/5">
+                          <p className="text-xl font-black italic">₹{trip.price.toLocaleString()}</p>
+                          <div className="bg-white text-black p-3 rounded-2xl group-hover:bg-[#e7d393] transition-colors shadow-lg">
+                            <ChevronRight size={16} strokeWidth={3} />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
+                    </motion.div>
+                  </Link>
                 ))}
               </AnimatePresence>
             </div>
