@@ -20,28 +20,31 @@ const Register = () => {
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(
-        `https://tourmitra-74s0.onrender.com/api/auth/register`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(user),
-        }
-      );
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-      if (response.ok) {
-        setUser({ username: "", email: "", phone: "", password: "" });
-        router.push("/login");
-      } else {
-        alert("Registration failed");
-      }
-    } catch (error) {
-      console.log("register", error);
+  try {
+    // ✅ ENV se backend URL lo
+    const API = process.env.NEXT_PUBLIC_API_URL;
+
+    const response = await fetch(`${API}/api/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+
+    if (response.ok) {
+      setUser({ username: "", email: "", phone: "", password: "" });
+      router.push("/login");
+    } else {
+      alert("Registration failed");
     }
-  };
+  } catch (error) {
+    console.log("register", error);
+  }
+};
 
   return (
     <section className="min-h-screen bg-[#0a0a0a] relative overflow-hidden px-4 pt-32 pb-20 flex items-center justify-center selection:bg-[#e7d393] selection:text-black">

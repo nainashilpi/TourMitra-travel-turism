@@ -15,19 +15,29 @@ const Login = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(`https://tourmitra-74s0.onrender.com/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
-      });
-      if (response.ok) router.push("/");
-      else alert("Invalid credentials");
-    } catch (error) {
-      console.log("login error", error);
+  e.preventDefault();
+
+  try {
+    // ✅ backend URL from env
+    const API = process.env.NEXT_PUBLIC_API_URL;
+
+    const response = await fetch(`${API}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+
+    if (response.ok) {
+      router.push("/");
+    } else {
+      alert("Invalid credentials");
     }
-  };
+  } catch (error) {
+    console.log("login error", error);
+  }
+};
 
   return (
     // bg-[#0a0a0a] for deep black base
